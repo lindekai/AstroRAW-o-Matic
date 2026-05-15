@@ -187,6 +187,16 @@ impl<'a> MetadataResolver<'a> {
             if let Some(wl) = self.raw.white_level {
                 header.push_int("WHITELEV", wl as i64, "White/saturation level (ADU)");
             }
+
+            // As-shot white balance coefficients (RGBE order, normalised to G=1)
+            if let Some(wb) = self.raw.wb_coeffs {
+                let [r, g, b, _g2] = wb;
+                if !r.is_nan() && !g.is_nan() && !b.is_nan() && g != 0.0 {
+                    header.push_float("CBLACK_R", (r / g) as f64, "WB coefficient Red (normalised to G)");
+                    header.push_float("CBLACK_G", 1.0_f64,         "WB coefficient Green (reference)");
+                    header.push_float("CBLACK_B", (b / g) as f64, "WB coefficient Blue (normalised to G)");
+                }
+            }
         }
 
         // --- Software creator ---

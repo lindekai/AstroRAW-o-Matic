@@ -18,6 +18,8 @@ pub struct RawPixelData {
     pub bayer_pattern: Option<String>,
     pub black_level: u16,
     pub white_level: u16,
+    /// As-shot white balance multipliers [R, G, B, G2]. NaN means unknown.
+    pub wb_coeffs: [f32; 4],
 }
 
 pub struct RawReader;
@@ -185,6 +187,7 @@ impl RawReader {
         let white_level = raw.whitelevel.0.first().copied()
             .map(|v| v as u16)
             .unwrap_or(u16::MAX);
+        let wb_coeffs = raw.wb_coeffs;
 
         Ok(RawPixelData {
             width,
@@ -193,6 +196,7 @@ impl RawReader {
             bayer_pattern: Some(bayer_pattern),
             black_level,
             white_level,
+            wb_coeffs,
         })
     }
 }

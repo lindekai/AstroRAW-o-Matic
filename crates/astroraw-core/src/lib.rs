@@ -138,6 +138,7 @@ pub fn convert_single(input: &Path, request: &ConvertRequest) -> ConvertResult {
     raw_meta.height = Some(pixel_data.height);
     raw_meta.black_level = Some(pixel_data.black_level as u32);
     raw_meta.white_level = Some(pixel_data.white_level as u32);
+    raw_meta.wb_coeffs = Some(pixel_data.wb_coeffs);
     if raw_meta.bayer_pattern.is_none() {
         raw_meta.bayer_pattern = pixel_data.bayer_pattern.clone();
     }

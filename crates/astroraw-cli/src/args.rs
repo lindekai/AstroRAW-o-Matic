@@ -12,7 +12,7 @@ Mostly harmless RAW conversion.\n";
     version,
     about = BANNER,
     long_about = None,
-    after_help = "Aliases: arom\n\nFor more information see https://github.com/yourusername/AstroRAW-o-Matic"
+    after_help = "Aliases: arom\n\nFor more information see https://github.com/lindekai/AstroRAW-o-Matic"
 )]
 pub struct Cli {
     /// Enable verbose debug output

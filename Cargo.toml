@@ -11,9 +11,9 @@ version = "0.1.0"
 edition = "2021"
 authors = ["Kai Linde"]
 license = "MIT"
-repository = "https://github.com/yourusername/AstroRAW-o-Matic"
-homepage = "https://github.com/yourusername/AstroRAW-o-Matic"
-documentation = "https://github.com/yourusername/AstroRAW-o-Matic/wiki"
+repository = "https://github.com/lindekai/AstroRAW-o-Matic"
+homepage = "https://github.com/lindekai/AstroRAW-o-Matic"
+documentation = "https://github.com/lindekai/AstroRAW-o-Matic/wiki"
 keywords = ["astronomy", "astrophotography", "fits", "raw", "conversion"]
 categories = ["command-line-utilities", "science"]
 

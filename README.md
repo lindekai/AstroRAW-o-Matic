@@ -58,7 +58,7 @@ Output: FITS 16-bit (BITPIX=16), RAW Bayer mosaic.
 ### From source (requires Rust toolchain)
 
 ```bash
-git clone https://github.com/yourusername/AstroRAW-o-Matic.git
+git clone https://github.com/lindekai/AstroRAW-o-Matic.git
 cd AstroRAW-o-Matic
 cargo build --release
 ```

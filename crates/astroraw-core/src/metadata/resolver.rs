@@ -140,16 +140,18 @@ impl<'a> MetadataResolver<'a> {
                 header.push_str("TELESCOP", tel, "Telescope or lens");
             }
 
-            // Focal length
+            // Focal length — session JSON overrides EXIF (important for telescopes)
             let focallen = eq.and_then(|e| e.focal_length).or(self.raw.focal_length);
             if let Some(fl) = focallen {
                 header.push_float("FOCALLEN", fl, "Focal length [mm]");
             }
 
-            // Aperture
+            // Aperture — skip if 0 or negative (EXIF sometimes returns 0 for manual lenses)
             let aperture = eq.and_then(|e| e.aperture).or(self.raw.aperture);
             if let Some(ap) = aperture {
-                header.push_float("APERTURE", ap, "Aperture f-number");
+                if ap > 0.0 {
+                    header.push_float("APERTURE", ap, "Aperture f-number");
+                }
             }
 
             // Filter

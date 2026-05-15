@@ -59,9 +59,18 @@ impl RawReader {
                         meta.iso_speed = v.first().map(|&x| x as u32);
                     }
                 }
-                exif::Tag::DateTimeOriginal => {
-                    let s = field.display_value().to_string();
-                    meta.date_obs = parse_exif_datetime(&s);
+                exif::Tag::DateTimeOriginal | exif::Tag::DateTime => {
+                    if meta.date_obs.is_none() {
+                        // Try both display_value and raw ASCII value
+                        let s = match &field.value {
+                            exif::Value::Ascii(v) => v.first()
+                                .and_then(|b| std::str::from_utf8(b).ok())
+                                .unwrap_or("")
+                                .to_string(),
+                            _ => field.display_value().to_string(),
+                        };
+                        meta.date_obs = parse_exif_datetime(&s);
+                    }
                 }
                 exif::Tag::FocalLength => {
                     if let exif::Value::Rational(ref v) = field.value {
@@ -129,16 +138,44 @@ impl RawReader {
             )));
         }
 
-        let width = raw.width as u32;
-        let height = raw.height as u32;
+        let full_width = raw.width;
+        let full_height = raw.height;
 
-        let data: Vec<u16> = match raw.data {
+        let all_pixels: Vec<u16> = match raw.data {
             rawler::RawImageData::Integer(pixels) => pixels,
             rawler::RawImageData::Float(_) => {
                 return Err(AstroError::RawReadError(
                     "Float RAW data is not supported. Expected 16-bit integer Bayer data.".to_string(),
                 ));
             }
+        };
+
+        // Crop to crop_area (removes optical black borders).
+        // Fall back to active_area, then full sensor.
+        let (width, height, data) = if let Some(crop) = raw.crop_area {
+            let x = crop.p.x;
+            let y = crop.p.y;
+            let w = crop.d.w;
+            let h = crop.d.h;
+            let mut cropped = Vec::with_capacity(w * h);
+            for row in y..y + h {
+                let start = row * full_width + x;
+                cropped.extend_from_slice(&all_pixels[start..start + w]);
+            }
+            (w as u32, h as u32, cropped)
+        } else if let Some(active) = raw.active_area {
+            let x = active.p.x;
+            let y = active.p.y;
+            let w = active.d.w;
+            let h = active.d.h;
+            let mut cropped = Vec::with_capacity(w * h);
+            for row in y..y + h {
+                let start = row * full_width + x;
+                cropped.extend_from_slice(&all_pixels[start..start + w]);
+            }
+            (w as u32, h as u32, cropped)
+        } else {
+            (full_width as u32, full_height as u32, all_pixels)
         };
 
         let bayer_pattern = raw.camera.cfa.name.clone();

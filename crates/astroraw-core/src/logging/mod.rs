@@ -1,4 +1,4 @@
-use tracing_subscriber::{fmt, EnvFilter};
+use tracing_subscriber::EnvFilter;
 
 pub fn init_logging(verbose: bool, json: bool) {
     let level = if verbose { "debug" } else { "info" };

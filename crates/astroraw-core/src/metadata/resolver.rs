@@ -201,7 +201,7 @@ impl<'a> MetadataResolver<'a> {
                 "Converted from RAW by AstroRAW-o-Matic on {}",
                 Utc::now().format("%Y-%m-%dT%H:%M:%SZ")
             );
-            header.push_str("HISTORY", &hist, None);
+            header.push_str("HISTORY", &hist, ());
         }
 
         ResolvedMetadata { header, warnings }

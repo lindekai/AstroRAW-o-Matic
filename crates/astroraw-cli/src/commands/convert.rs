@@ -1,5 +1,3 @@
-use std::path::PathBuf;
-
 use astroraw_core::{collect_raw_files, convert_batch, load_session_file, ConvertRequest};
 use astroraw_models::{FrameType, SessionMetadata, OutputOptions};
 

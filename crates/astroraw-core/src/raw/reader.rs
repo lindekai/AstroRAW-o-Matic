@@ -141,9 +141,13 @@ impl RawReader {
             }
         };
 
-        let bayer_pattern = raw.cfa.name.clone();
-        let black_level = raw.blacklevels[0] as u16;
-        let white_level = raw.whitelevels[0] as u16;
+        let bayer_pattern = raw.camera.cfa.name.clone();
+        let black_level = raw.blacklevel.levels.first()
+            .map(|r| r.as_f32() as u16)
+            .unwrap_or(0);
+        let white_level = raw.whitelevel.0.first().copied()
+            .map(|v| v as u16)
+            .unwrap_or(u16::MAX);
 
         Ok(RawPixelData {
             width,

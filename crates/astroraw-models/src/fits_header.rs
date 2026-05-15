@@ -28,6 +28,42 @@ impl std::fmt::Display for FitsValue {
     }
 }
 
+/// Helper trait so push_* methods accept both `"string literal"` and `None`.
+pub trait IntoComment {
+    fn into_comment(self) -> Option<String>;
+}
+
+impl IntoComment for &str {
+    fn into_comment(self) -> Option<String> {
+        Some(self.to_string())
+    }
+}
+
+impl IntoComment for String {
+    fn into_comment(self) -> Option<String> {
+        Some(self)
+    }
+}
+
+impl IntoComment for Option<String> {
+    fn into_comment(self) -> Option<String> {
+        self
+    }
+}
+
+impl IntoComment for Option<&str> {
+    fn into_comment(self) -> Option<String> {
+        self.map(|s| s.to_string())
+    }
+}
+
+// Allows passing bare `None` without a type annotation
+impl IntoComment for () {
+    fn into_comment(self) -> Option<String> {
+        None
+    }
+}
+
 /// The full resolved FITS header for one output file.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct FitsHeader {
@@ -39,27 +75,27 @@ impl FitsHeader {
         Self::default()
     }
 
-    pub fn push(&mut self, keyword: impl Into<String>, value: FitsValue, comment: impl Into<Option<String>>) {
+    pub fn push(&mut self, keyword: impl Into<String>, value: FitsValue, comment: impl IntoComment) {
         self.records.push(FitsHeaderRecord {
             keyword: keyword.into(),
             value,
-            comment: comment.into(),
+            comment: comment.into_comment(),
         });
     }
 
-    pub fn push_str(&mut self, keyword: impl Into<String>, value: impl Into<String>, comment: impl Into<Option<String>>) {
+    pub fn push_str(&mut self, keyword: impl Into<String>, value: impl Into<String>, comment: impl IntoComment) {
         self.push(keyword, FitsValue::Str(value.into()), comment);
     }
 
-    pub fn push_int(&mut self, keyword: impl Into<String>, value: i64, comment: impl Into<Option<String>>) {
+    pub fn push_int(&mut self, keyword: impl Into<String>, value: i64, comment: impl IntoComment) {
         self.push(keyword, FitsValue::Int(value), comment);
     }
 
-    pub fn push_float(&mut self, keyword: impl Into<String>, value: f64, comment: impl Into<Option<String>>) {
+    pub fn push_float(&mut self, keyword: impl Into<String>, value: f64, comment: impl IntoComment) {
         self.push(keyword, FitsValue::Float(value), comment);
     }
 
-    pub fn push_bool(&mut self, keyword: impl Into<String>, value: bool, comment: impl Into<Option<String>>) {
+    pub fn push_bool(&mut self, keyword: impl Into<String>, value: bool, comment: impl IntoComment) {
         self.push(keyword, FitsValue::Bool(value), comment);
     }
 }

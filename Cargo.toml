@@ -9,7 +9,7 @@ resolver = "2"
 [workspace.package]
 version = "0.1.0"
 edition = "2021"
-authors = ["AstroRAW-o-Matic Contributors"]
+authors = ["lindekai"]
 license = "MIT"
 repository = "https://github.com/yourusername/AstroRAW-o-Matic"
 homepage = "https://github.com/yourusername/AstroRAW-o-Matic"

@@ -1,0 +1,25 @@
+[package]
+name = "astroraw-core"
+description = "Core engine for AstroRAW-o-Matic: RAW reading, FITS writing, metadata resolution"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+astroraw-models = { path = "../astroraw-models" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+chrono = { workspace = true }
+walkdir = { workspace = true }
+
+# RAW file parsing — pure Rust TIFF/CR2 metadata extraction
+# Full LibRaw binding can be added later via libraw-sys when C FFI is desired.
+kamadak-exif = "0.5"
+
+[dev-dependencies]
+tempfile = "3"

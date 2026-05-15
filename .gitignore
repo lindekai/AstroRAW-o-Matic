@@ -1,0 +1,27 @@
+# Rust
+/target/
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Test artifacts
+/test-data/
+/test-output/
+
+# Logs
+*.log
+
+# Environment
+.env

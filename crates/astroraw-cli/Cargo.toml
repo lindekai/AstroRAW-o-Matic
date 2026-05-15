@@ -1,0 +1,22 @@
+[package]
+name = "astroraw-o-matic"
+description = "Mostly harmless RAW conversion — CLI for AstroRAW-o-Matic"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "astroraw-o-matic"
+path = "src/main.rs"
+
+[dependencies]
+astroraw-core = { path = "../astroraw-core" }
+astroraw-models = { path = "../astroraw-models" }
+clap = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+chrono = { workspace = true }
+anyhow = { workspace = true }

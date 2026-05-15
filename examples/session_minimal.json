@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "object": "NGC 7000 North America Nebula",
+  "observer": "Anonymous",
+  "frame_type": "light",
+  "output": {
+    "raw_mode": "raw_bayer",
+    "header_mode": "minimal"
+  }
+}

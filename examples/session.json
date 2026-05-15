@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "object": "M31 Andromeda Galaxy",
+  "observer": "K. Linde",
+  "notes": "Autumn session, good seeing, slight haze on horizon",
+  "session_date": "2024-09-15",
+  "frame_type": "light",
+  "equipment": {
+    "telescope": "Skywatcher 80ED",
+    "focal_length": 600,
+    "aperture": 7.5,
+    "filter": "L",
+    "camera": {
+      "make": "Canon",
+      "model": "EOS 600Da",
+      "pixel_size_x": 4.3,
+      "pixel_size_y": 4.3
+    }
+  },
+  "location": {
+    "latitude": 52.5200,
+    "longitude": 13.4050,
+    "elevation": 34.0,
+    "site_name": "Backyard Observatory, Berlin"
+  },
+  "output": {
+    "raw_mode": "raw_bayer",
+    "header_mode": "astro",
+    "overwrite": false,
+    "write_history": true
+  },
+  "file_overrides": {
+    "dark_001.CR2": {
+      "frame_type": "dark"
+    },
+    "flat_001.CR2": {
+      "frame_type": "flat",
+      "filter": "L"
+    }
+  }
+}

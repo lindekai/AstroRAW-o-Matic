@@ -1,0 +1,50 @@
+[workspace]
+members = [
+    "crates/astroraw-core",
+    "crates/astroraw-cli",
+    "crates/astroraw-models",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["AstroRAW-o-Matic Contributors"]
+license = "MIT"
+repository = "https://github.com/yourusername/AstroRAW-o-Matic"
+homepage = "https://github.com/yourusername/AstroRAW-o-Matic"
+documentation = "https://github.com/yourusername/AstroRAW-o-Matic/wiki"
+keywords = ["astronomy", "astrophotography", "fits", "raw", "conversion"]
+categories = ["command-line-utilities", "science"]
+
+[workspace.dependencies]
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Error handling
+thiserror = "1"
+anyhow = "1"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+# CLI
+clap = { version = "4", features = ["derive", "color", "wrap_help"] }
+
+# Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Path handling
+walkdir = "2"
+
+# Testing
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

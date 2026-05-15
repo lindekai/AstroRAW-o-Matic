@@ -93,8 +93,8 @@ pub fn convert_single(input: &Path, request: &ConvertRequest) -> ConvertResult {
         };
     }
 
-    // 1. Read RAW metadata
-    let raw_meta = match RawReader::read_metadata(input) {
+    // 1. Read RAW metadata (EXIF)
+    let mut raw_meta = match RawReader::read_metadata(input) {
         Ok(m) => m,
         Err(e) => {
             warn!("Could not read RAW metadata from {}: {}", input.display(), e);
@@ -103,13 +103,11 @@ pub fn convert_single(input: &Path, request: &ConvertRequest) -> ConvertResult {
         }
     };
 
-    // 2. Resolve merged metadata (priority: file override > session > raw > defaults)
-    let filename = input.file_name().unwrap_or_default().to_string_lossy().to_string();
-    let resolver = MetadataResolver::new(&request.session, raw_meta, &filename);
-    let resolved = resolver.resolve(request.frame_type_override, request.object_override.as_deref());
-    warnings.extend(resolved.warnings.clone());
-
     if request.dry_run {
+        let filename = input.file_name().unwrap_or_default().to_string_lossy().to_string();
+        let resolver = MetadataResolver::new(&request.session, raw_meta, &filename);
+        let resolved = resolver.resolve(request.frame_type_override, request.object_override.as_deref());
+        warnings.extend(resolved.warnings);
         info!("[dry-run] Would write: {}", output.display());
         return ConvertResult {
             input: input.to_path_buf(),
@@ -120,7 +118,7 @@ pub fn convert_single(input: &Path, request: &ConvertRequest) -> ConvertResult {
         };
     }
 
-    // 3. Read RAW pixel data
+    // 2. Read RAW pixel data (rawler) — provides real Bayer data + black/white levels
     let pixel_data = match RawReader::read_raw_bayer(input) {
         Ok(d) => d,
         Err(e) => {
@@ -134,7 +132,20 @@ pub fn convert_single(input: &Path, request: &ConvertRequest) -> ConvertResult {
         }
     };
 
-    // 4. Write FITS
+    // 3. Feed black/white levels from rawler back into metadata before resolving
+    raw_meta.black_level = Some(pixel_data.black_level as u32);
+    raw_meta.white_level = Some(pixel_data.white_level as u32);
+    if raw_meta.bayer_pattern.is_none() {
+        raw_meta.bayer_pattern = pixel_data.bayer_pattern.clone();
+    }
+
+    // 4. Resolve merged metadata
+    let filename = input.file_name().unwrap_or_default().to_string_lossy().to_string();
+    let resolver = MetadataResolver::new(&request.session, raw_meta, &filename);
+    let resolved = resolver.resolve(request.frame_type_override, request.object_override.as_deref());
+    warnings.extend(resolved.warnings.clone());
+
+    // 5. Write FITS
     let writer = FitsWriter::new();
     match writer.write(&output, &resolved.header, &pixel_data) {
         Ok(_) => {

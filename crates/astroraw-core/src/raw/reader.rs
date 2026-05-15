@@ -4,19 +4,20 @@ use std::path::Path;
 
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
 use exif;
-use tracing::{debug, warn};
+use tracing::debug;
 
 use astroraw_models::RawMetadata;
 use crate::error::{AstroError, Result};
 
-/// Raw pixel data extracted from a CR2/RAW file.
-/// For MVP we preserve Bayer data as 16-bit unsigned integers.
+/// Raw pixel data extracted from a CR2/RAW file — preserved as Bayer mosaic.
 #[derive(Debug)]
 pub struct RawPixelData {
     pub width: u32,
     pub height: u32,
     pub data: Vec<u16>,
     pub bayer_pattern: Option<String>,
+    pub black_level: u16,
+    pub white_level: u16,
 }
 
 pub struct RawReader;
@@ -41,10 +42,10 @@ impl RawReader {
             let tag = field.tag;
             match tag {
                 exif::Tag::Make => {
-                    meta.camera_make = Some(field.display_value().to_string().trim_matches('"').to_string());
+                    meta.camera_make = Some(clean_string(&field.display_value().to_string()));
                 }
                 exif::Tag::Model => {
-                    meta.camera_model = Some(field.display_value().to_string().trim_matches('"').to_string());
+                    meta.camera_model = Some(clean_string(&field.display_value().to_string()));
                 }
                 exif::Tag::ExposureTime => {
                     if let exif::Value::Rational(ref v) = field.value {
@@ -100,67 +101,72 @@ impl RawReader {
             }
         }
 
-        // CR2 files from Canon DSLRs are 14-bit raw, stored in 16-bit containers
+        // Canon DSLRs: 14-bit RAW in 16-bit container
         meta.bit_depth = Some(14);
 
-        // Bayer pattern: Canon DSLRs typically use RGGB
-        // This is not in standard EXIF; we infer it from make/model for MVP.
         if meta.bayer_pattern.is_none() {
-            meta.bayer_pattern = infer_bayer_pattern(meta.camera_make.as_deref(), meta.camera_model.as_deref());
+            meta.bayer_pattern = infer_bayer_pattern(meta.camera_make.as_deref());
         }
 
         Ok(meta)
     }
 
-    /// Read raw Bayer pixel data from a CR2 file.
-    ///
-    /// For MVP this returns a stub — full LibRaw FFI integration is the next step.
-    /// The architecture is ready: replace the stub body with actual LibRaw calls.
+    /// Read raw Bayer pixel data from a CR2 file using rawler.
     pub fn read_raw_bayer(path: &Path) -> Result<RawPixelData> {
         if !path.exists() {
             return Err(AstroError::FileNotFound(path.display().to_string()));
         }
 
-        // Read metadata first to get dimensions
-        let meta = Self::read_metadata(path)?;
+        let raw = rawler::decode_file(path)
+            .map_err(|e| AstroError::RawReadError(e.to_string()))?;
 
-        let width = meta.width.unwrap_or(0);
-        let height = meta.height.unwrap_or(0);
-
-        if width == 0 || height == 0 {
-            return Err(AstroError::RawReadError(
-                "Could not determine image dimensions. \
-                 The universe refused to yield width/height from this RAW file.".to_string(),
-            ));
+        let cpp = raw.cpp; // components per pixel (1 = Bayer mosaic)
+        if cpp != 1 {
+            return Err(AstroError::RawReadError(format!(
+                "Expected single-channel Bayer data (cpp=1), got cpp={}. \
+                 Debayered input is not supported.",
+                cpp
+            )));
         }
 
-        warn!(
-            "LibRaw pixel extraction not yet integrated. \
-             Returning zero-filled placeholder data for {}. \
-             This is a known limitation — see ROADMAP.md.",
-            path.display()
-        );
+        let width = raw.width as u32;
+        let height = raw.height as u32;
 
-        // Placeholder: zero-filled Bayer plane
-        let data = vec![0u16; (width * height) as usize];
+        let data: Vec<u16> = match raw.data {
+            rawler::RawImageData::Integer(pixels) => pixels,
+            rawler::RawImageData::Float(_) => {
+                return Err(AstroError::RawReadError(
+                    "Float RAW data is not supported. Expected 16-bit integer Bayer data.".to_string(),
+                ));
+            }
+        };
+
+        let bayer_pattern = raw.cfa.name.clone();
+        let black_level = raw.blacklevels[0] as u16;
+        let white_level = raw.whitelevels[0] as u16;
 
         Ok(RawPixelData {
             width,
             height,
             data,
-            bayer_pattern: meta.bayer_pattern,
+            bayer_pattern: Some(bayer_pattern),
+            black_level,
+            white_level,
         })
     }
 }
 
+fn clean_string(s: &str) -> String {
+    s.trim_matches('"').trim().to_string()
+}
+
 fn parse_exif_datetime(s: &str) -> Option<DateTime<Utc>> {
-    // EXIF format: "2023:07:15 21:34:00"
     NaiveDateTime::parse_from_str(s.trim_matches('"'), "%Y:%m:%d %H:%M:%S")
         .ok()
         .map(|ndt| Utc.from_utc_datetime(&ndt))
 }
 
-fn infer_bayer_pattern(make: Option<&str>, _model: Option<&str>) -> Option<String> {
+fn infer_bayer_pattern(make: Option<&str>) -> Option<String> {
     match make {
         Some(m) if m.to_uppercase().contains("CANON") => Some("RGGB".to_string()),
         Some(m) if m.to_uppercase().contains("NIKON") => Some("RGGB".to_string()),

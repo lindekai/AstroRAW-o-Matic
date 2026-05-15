@@ -78,6 +78,10 @@ pub struct ConvertArgs {
     #[arg(long)]
     pub observer: Option<String>,
 
+    /// Override observation date/time (ISO 8601: "2024-01-09T21:34:00")
+    #[arg(long, value_name = "DATETIME")]
+    pub date_obs: Option<String>,
+
     /// Header mode: minimal or astro (default: astro)
     #[arg(long, default_value = "astro")]
     pub header_mode: String,

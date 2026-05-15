@@ -84,6 +84,9 @@ fn apply_cli_overrides(session: &mut SessionMetadata, args: &ConvertArgs) {
     if let Some(ref obs) = args.observer {
         session.observer = Some(obs.clone());
     }
+    if let Some(ref date) = args.date_obs {
+        session.date_obs = Some(date.clone());
+    }
 
     // Ensure output options exist
     let out = session.output.get_or_insert_with(OutputOptions::default);

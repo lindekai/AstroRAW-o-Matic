@@ -81,12 +81,14 @@ impl<'a> MetadataResolver<'a> {
             }
         }
 
-        // --- Date of observation ---
-        let date_obs = self.raw.date_obs.map(|d| d.format("%Y-%m-%dT%H:%M:%S").to_string());
+        // --- Date of observation — priority: file_override > session > EXIF ---
+        let date_obs = file_override.and_then(|f| f.date_obs.clone())
+            .or_else(|| self.session.date_obs.clone())
+            .or_else(|| self.raw.date_obs.map(|d| d.format("%Y-%m-%dT%H:%M:%S").to_string()));
         match date_obs {
             Some(ref d) => header.push_str("DATE-OBS", d, "Date and time of observation (UTC)"),
             None => {
-                warnings.push("DATE-OBS could not be determined from RAW metadata.".to_string());
+                warnings.push("DATE-OBS could not be determined. Supply it via --date-obs or session JSON.".to_string());
             }
         }
 

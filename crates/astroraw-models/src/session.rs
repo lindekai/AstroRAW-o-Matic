@@ -22,6 +22,10 @@ pub struct SessionMetadata {
     // --- Location ---
     pub location: Option<LocationMetadata>,
 
+    // --- Date override (use if camera clock was wrong) ---
+    /// ISO 8601: "2024-01-09T21:34:00" or "2024-01-09T21:34:00Z"
+    pub date_obs: Option<String>,
+
     // --- Frame classification ---
     pub frame_type: Option<FrameType>,
 
@@ -87,4 +91,5 @@ pub struct FileOverride {
     pub frame_type: Option<FrameType>,
     pub filter: Option<String>,
     pub notes: Option<String>,
+    pub date_obs: Option<String>,
 }

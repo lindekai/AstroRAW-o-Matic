@@ -2,6 +2,9 @@
 
 **Mostly harmless RAW conversion.**
 
+> **⚠️ Early Alpha — not ready for production use.**
+> The core architecture and CLI are in place, but RAW pixel extraction is not yet fully implemented. Expect breaking changes. Feedback and contributions welcome.
+
 > *"Space is big. You just won't believe how vastly, hugely, mind-bogglingly big it is. And it turns out, so are CR2 files."*
 
 AstroRAW-o-Matic is a reproducible, workflow-oriented RAW-to-FITS converter for astrophotographers. It is the clean first step before stacking and image processing — not a competitor to PixInsight, Siril, or DeepSkyStacker, but the tool you run *before* those.

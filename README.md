@@ -20,7 +20,7 @@ It takes your DSLR RAW files and turns them into properly-headered, reproducible
 **Dark Matters — Astro Community**
 Questions, feedback and discussions about AstroRAW-o-Matic:
 
-> 🔗 Discord link coming soon
+> 🔗 [discord.gg/mvgC6aXY](https://discord.gg/mvgC6aXY)
 
 ---
 

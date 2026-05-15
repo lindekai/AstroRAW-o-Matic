@@ -18,7 +18,7 @@ Es nimmt deine DSLR-RAW-Dateien und verwandelt sie in sauber geheaderte, reprodu
 **Dark Matters — Astro Community**
 Fragen, Feedback und Diskussionen rund um AstroRAW-o-Matic findest du auf dem Dark Matters Discord:
 
-> 🔗 Discord-Link folgt
+> 🔗 [discord.gg/mvgC6aXY](https://discord.gg/mvgC6aXY)
 
 ---
 

@@ -2,6 +2,8 @@
 
 **Mostly harmless RAW conversion.**
 
+🇩🇪 [Deutsche Version / German version](README.de.md)
+
 > **⚠️ Early Alpha — not ready for production use.**
 > The core architecture and CLI are in place, but RAW pixel extraction is not yet fully implemented. Expect breaking changes. Feedback and contributions welcome.
 
@@ -10,6 +12,15 @@
 AstroRAW-o-Matic is a reproducible, workflow-oriented RAW-to-FITS converter for astrophotographers. It is the clean first step before stacking and image processing — not a competitor to PixInsight, Siril, or DeepSkyStacker, but the tool you run *before* those.
 
 It takes your DSLR RAW files and turns them into properly-headered, reproducible FITS files, ready for your stacking software of choice.
+
+---
+
+## Community
+
+**Dark Matters — Astro Community**
+Questions, feedback and discussions about AstroRAW-o-Matic:
+
+> 🔗 Discord link coming soon
 
 ---
 

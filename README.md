@@ -321,7 +321,7 @@ cargo run --bin astroraw-o-matic -- --help
 
 ## License
 
-MIT — Copyright (c) 2024 Kai Linde — see [LICENSE](LICENSE).
+MIT — Copyright (c) 2026 Kai Linde — see [LICENSE](LICENSE).
 
 ---
 

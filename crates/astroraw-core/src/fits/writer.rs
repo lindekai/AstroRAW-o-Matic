@@ -78,29 +78,52 @@ impl FitsWriter {
         card[8] = b'=';
         card[9] = b' ';
 
+        // String values need special layout: '..value..'   / comment
+        if let FitsValue::Str(s) = &rec.value {
+            // Max string content: 68 chars (card[10..78], leaving room for two quotes)
+            let max_str = 68usize;
+            let content = if s.len() > max_str { &s[..max_str] } else { s.as_str() };
+            let content_bytes = content.as_bytes();
+            let content_len = content_bytes.len();
+
+            card[10] = b'\'';
+            card[11..11 + content_len].copy_from_slice(content_bytes);
+            card[11 + content_len] = b'\'';
+
+            // Comment after closing quote — must start at col 32+ and fit in card
+            let comment_start = (11 + content_len + 1).max(32).min(FITS_RECORD_SIZE - 2);
+            if let Some(ref comment) = rec.comment {
+                if comment_start + 2 < FITS_RECORD_SIZE {
+                    card[comment_start] = b'/';
+                    card[comment_start + 1] = b' ';
+                    let c_bytes = comment.as_bytes();
+                    let c_len = c_bytes.len().min(FITS_RECORD_SIZE - comment_start - 2);
+                    card[comment_start + 2..comment_start + 2 + c_len]
+                        .copy_from_slice(&c_bytes[..c_len]);
+                }
+            }
+            return Ok(card);
+        }
+
+        // Numeric / bool values — right-justified in columns 11-30
         let value_str = match &rec.value {
             FitsValue::Bool(b) => format!("{:>20}", if *b { "T" } else { "F" }),
-            FitsValue::Int(i) => format!("{:>20}", i),
+            FitsValue::Int(i)  => format!("{:>20}", i),
             FitsValue::Float(f) => format!("{:>20.6E}", f),
-            FitsValue::Str(s) => {
-                // FITS strings: left-justified, single-quoted, max 68 chars in value field
-                let trimmed = if s.len() > 18 { &s[..18] } else { s.as_str() };
-                format!("'{:<8}'", trimmed)
-            }
+            FitsValue::Str(_) => unreachable!(),
         };
 
         let val_bytes = value_str.as_bytes();
         let val_len = val_bytes.len().min(20);
         card[10..10 + val_len].copy_from_slice(&val_bytes[..val_len]);
 
-        // Comment
+        // Comment at col 32
         if let Some(ref comment) = rec.comment {
-            let comment_start = 32;
-            card[comment_start - 2] = b' ';
-            card[comment_start - 1] = b'/';
+            card[30] = b' ';
+            card[31] = b'/';
             let c_bytes = comment.as_bytes();
-            let c_len = c_bytes.len().min(FITS_RECORD_SIZE - comment_start);
-            card[comment_start..comment_start + c_len].copy_from_slice(&c_bytes[..c_len]);
+            let c_len = c_bytes.len().min(FITS_RECORD_SIZE - 32);
+            card[32..32 + c_len].copy_from_slice(&c_bytes[..c_len]);
         }
 
         Ok(card)

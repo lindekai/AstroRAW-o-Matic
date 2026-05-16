@@ -19,13 +19,19 @@
 
   onMount(async () => {
     const win = getCurrentWindow();
-    const unlisten = await win.onDragDropEvent((event) => {
+    const unlisten = await win.onDragDropEvent(async (event) => {
       const type = event.payload.type;
       if (type === "drop") {
         const paths = (event.payload.paths || []).filter(p =>
           RAW_EXTS.includes(p.split(".").pop()?.toLowerCase() ?? "")
         );
-        if (paths.length) selectedFiles = [...selectedFiles, ...paths];
+        if (paths.length) {
+          selectedFiles = [...selectedFiles, ...paths];
+          // Pre-fill session date/time from first dropped file if not yet set
+          if (!session.session_date && paths[0]) {
+            await prefillDateFromFile(paths[0]);
+          }
+        }
         dragOver = false;
       } else if (type === "over" || type === "enter") {
         dragOver = true;
@@ -40,6 +46,9 @@
     schema_version: "1.0",
     object: "",
     observer: "",
+    session_date: "",
+    session_time: "",
+    date_obs: null,
     frame_type: "light",
     equipment: {
       telescope: "",
@@ -52,12 +61,28 @@
     output: { raw_mode: "raw_bayer", header_mode: "astro", overwrite: false, write_history: true, json_filename_pattern: "session_{object}_{date}" }
   };
 
+  async function prefillDateFromFile(path) {
+    try {
+      const meta = await invoke("inspect_file", { path });
+      if (meta.success && meta.date_obs) {
+        // date_obs format: "2024-01-09T03:42:09"
+        const [datePart, timePart] = meta.date_obs.split("T");
+        if (datePart && !session.session_date) session.session_date = datePart;
+        if (timePart && !session.session_time) session.session_time = timePart;
+      }
+    } catch (_) {}
+  }
+
   async function pickFiles() {
     const files = await open({
       multiple: true,
       filters: [{ name: "RAW Files", extensions: ["cr2", "CR2", "nef", "NEF", "arw", "ARW"] }]
     });
-    if (files) selectedFiles = Array.isArray(files) ? files : [files];
+    if (files) {
+      const paths = Array.isArray(files) ? files : [files];
+      selectedFiles = paths;
+      if (!session.session_date && paths[0]) await prefillDateFromFile(paths[0]);
+    }
   }
 
 

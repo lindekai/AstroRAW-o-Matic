@@ -81,9 +81,17 @@ impl<'a> MetadataResolver<'a> {
             }
         }
 
-        // --- Date of observation — priority: file_override > session > EXIF ---
+        // --- Date of observation — priority: file_override > date_obs > session_date+time > EXIF ---
         let date_obs = file_override.and_then(|f| f.date_obs.clone())
             .or_else(|| self.session.date_obs.clone())
+            .or_else(|| {
+                // Combine session_date + session_time if both present
+                match (&self.session.session_date, &self.session.session_time) {
+                    (Some(d), Some(t)) => Some(format!("{}T{}", d, t)),
+                    (Some(d), None)    => Some(d.clone()),
+                    _ => None,
+                }
+            })
             .or_else(|| self.raw.date_obs.map(|d| d.format("%Y-%m-%dT%H:%M:%S").to_string()));
         match date_obs {
             Some(ref d) => header.push_str("DATE-OBS", d, "Date and time of observation (UTC)"),

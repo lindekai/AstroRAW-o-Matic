@@ -2,6 +2,7 @@
   export let session;
   const frameTypes = ["light", "dark", "flat", "bias"];
   const headerModes = ["astro", "minimal"];
+  const patternHint = "{object}  {date}  {observer}";
 
   $: focalRatio = (session.equipment.focal_length && session.equipment.aperture && session.equipment.aperture > 0)
     ? (session.equipment.focal_length / session.equipment.aperture).toFixed(1)
@@ -16,6 +17,10 @@
       <input id="obj" bind:value={session.object} placeholder="M31 …" /></div>
     <div class="f"><label for="obs">Observer</label>
       <input id="obs" bind:value={session.observer} placeholder="Name" /></div>
+    <div class="f"><label for="sdate">Session Date</label>
+      <input id="sdate" type="date" bind:value={session.session_date} /></div>
+    <div class="f"><label for="stime">Session Time (UTC)</label>
+      <input id="stime" type="time" step="1" bind:value={session.session_time} /></div>
     <div class="f"><label for="ft">Frame Type</label>
       <select id="ft" bind:value={session.frame_type}>
         {#each frameTypes as t}<option value={t}>{t.charAt(0).toUpperCase()+t.slice(1)}</option>{/each}
@@ -86,8 +91,8 @@
     <div class="f g2-span">
       <label for="jsfn">JSON Filename Pattern</label>
       <input id="jsfn" bind:value={session.output.json_filename_pattern}
-             placeholder="session_{object}_{date}" />
-      <span class="hint">Placeholders: {"{object}"} {"{date}"} {"{observer}"}</span>
+             placeholder={"session_{object}_{date}"} />
+      <span class="hint">Placeholders: {patternHint}</span>
     </div>
   </div>
 

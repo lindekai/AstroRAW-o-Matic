@@ -14,17 +14,20 @@ pub struct SessionMetadata {
     pub object: Option<String>,
     pub observer: Option<String>,
     pub notes: Option<String>,
+
+    // --- Session date/time (used as DATE-OBS if no EXIF; pre-filled from EXIF in GUI) ---
+    /// Session date: "2024-01-09"
     pub session_date: Option<String>,
+    /// Session time (UTC): "21:34:00"
+    pub session_time: Option<String>,
+    /// Full DATE-OBS override — takes priority over session_date + session_time + EXIF
+    pub date_obs: Option<String>,
 
     // --- Equipment ---
     pub equipment: Option<EquipmentMetadata>,
 
     // --- Location ---
     pub location: Option<LocationMetadata>,
-
-    // --- Date override (use if camera clock was wrong) ---
-    /// ISO 8601: "2024-01-09T21:34:00" or "2024-01-09T21:34:00Z"
-    pub date_obs: Option<String>,
 
     // --- Frame classification ---
     pub frame_type: Option<FrameType>,

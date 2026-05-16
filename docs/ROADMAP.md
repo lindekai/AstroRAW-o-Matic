@@ -43,8 +43,17 @@
 - [ ] Batch progress bar
 - [ ] Error list
 
+## v0.6 // N.I.N.A. Bridge Plugin
+
+- [ ] N.I.N.A. Bridge Plugin (C# // Windows)
+- [ ] Automatic conversion after each N.I.N.A. exposure
+- [ ] Session metadata from N.I.N.A. profile (target, filter, telescope)
+- [ ] Plugin settings UI in N.I.N.A.
+- [ ] Async conversion (no blocking of acquisition sequence)
+- [ ] N.I.N.A. log integration
+
 ## Future
 
 - [ ] Optional debayering (for preview / quick-look)
 - [ ] Auto-stretch preview in GUI
-- [ ] NINA/Ekos/Sequence Generator Pro integration notes
+- [ ] Ekos / Sequence Generator Pro integration

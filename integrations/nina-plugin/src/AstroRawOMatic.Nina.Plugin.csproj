@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <AssemblyName>AstroRawOMatic.Nina.Plugin</AssemblyName>
+    <RootNamespace>AstroRawOMatic.Nina.Plugin</RootNamespace>
+    <Version>0.1.0</Version>
+    <Authors>Kai Linde</Authors>
+    <Description>AstroRAW-o-Matic Bridge Plugin for N.I.N.A. // Converts CR2 to FITS via CLI</Description>
+    <Copyright>© 2026 Kai Linde</Copyright>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- N.I.N.A. Plugin SDK: add via NuGet when available -->
+    <!-- <PackageReference Include="NINA.Plugin" Version="*" /> -->
+    <PackageReference Include="System.Text.Json" Version="8.*" />
+  </ItemGroup>
+
+</Project>

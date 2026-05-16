@@ -276,6 +276,29 @@ The engine is UI-free. The CLI is a thin layer over the engine. The future GUI w
 
 ---
 
+## N.I.N.A. Integration (planned)
+
+An optional **Bridge Plugin** for [N.I.N.A.](https://nighttime-imaging.eu/) is planned.
+
+```
+N.I.N.A. Session (Windows)
+        │  new CR2 captured
+        ▼
+AstroRAW-o-Matic Bridge Plugin (C#)
+  → collects session metadata from N.I.N.A.
+  → generates session.json
+  → calls astroraw-o-matic CLI (async)
+        │
+        ▼
+   FITS file // full astro header
+```
+
+**Key principle:** The plugin contains **no conversion logic**. All conversion is done by the Rust CLI. The plugin is a thin bridge only.
+
+See [`integrations/nina-plugin/`](integrations/nina-plugin/) for architecture, scaffold and documentation.
+
+---
+
 ## Roadmap
 
 - [x] Canon CR2 EXIF metadata extraction

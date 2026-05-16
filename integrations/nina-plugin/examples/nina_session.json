@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "_comment": "Dieses JSON wird vom N.I.N.A. Bridge Plugin automatisch erzeugt.",
+  "_source": "AstroRAW-o-Matic N.I.N.A. Bridge Plugin v0.1",
+
+  "object": "Horsehead Nebula",
+  "observer": "Kai Linde",
+  "notes": "N.I.N.A. Sequenz: Horsehead_2024-01-09",
+  "session_date": "2024-01-09",
+  "session_time": "21:34:00",
+  "frame_type": "light",
+
+  "equipment": {
+    "telescope": "Skywatcher 80ED",
+    "focal_length": 600,
+    "aperture": 80,
+    "filter": "UV/IR",
+    "camera": {
+      "make": "Canon",
+      "model": "EOS 600Da",
+      "pixel_size_x": 4.3,
+      "pixel_size_y": 4.3
+    }
+  },
+
+  "location": {
+    "latitude": 52.52,
+    "longitude": 13.40,
+    "elevation": 34.0,
+    "site_name": "Gartensternwarte Berlin"
+  },
+
+  "output": {
+    "raw_mode": "raw_bayer",
+    "header_mode": "astro",
+    "overwrite": true,
+    "write_history": true
+  }
+}

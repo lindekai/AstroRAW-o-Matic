@@ -3,6 +3,7 @@ members = [
     "crates/astroraw-core",
     "crates/astroraw-cli",
     "crates/astroraw-models",
+    "crates/astroraw-gui/src-tauri",
 ]
 resolver = "2"
 

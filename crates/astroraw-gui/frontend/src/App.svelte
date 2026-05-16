@@ -8,12 +8,14 @@
   import ConvertPanel from "./lib/ConvertPanel.svelte";
   import ResultsPanel from "./lib/ResultsPanel.svelte";
   import Footer from "./lib/Footer.svelte";
+  import HelpDialog from "./lib/HelpDialog.svelte";
 
   let selectedFiles = [];
   let outputDir = "";
   let results = null;
   let converting = false;
   let sessionStatus = "";
+  let helpOpen = false;
   let dragOver = false;
 
   const RAW_EXTS = ["cr2", "nef", "arw", "raf"];
@@ -163,6 +165,7 @@
     {#if sessionStatus}
       <span class="status-msg">{sessionStatus}</span>
     {/if}
+    <button class="tb-btn help-btn" on:click={() => helpOpen = true}>? Hilfe</button>
   </div>
 
   <!-- Main layout -->
@@ -193,6 +196,8 @@
   </div>
   <Footer cliVersion="0.3.0" guiVersion="0.3.0" />
 </main>
+
+<HelpDialog bind:open={helpOpen} />
 
 <style>
   :global(*, *::before, *::after) { box-sizing: border-box; margin: 0; padding: 0; }
@@ -246,6 +251,7 @@
     cursor: pointer;
   }
   .tb-btn:hover { background: #3d4f66; color: #e2e8f0; }
+  .help-btn { margin-left: auto; color: #63b3ed; border-color: #2b6cb0; }
   .status-msg { font-size: 11px; color: #68d391; margin-left: 4px; }
 
   /* Layout */

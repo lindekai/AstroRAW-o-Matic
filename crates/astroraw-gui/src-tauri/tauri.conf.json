@@ -14,9 +14,9 @@
       {
         "title": "AstroRAW-o-Matic — Mostly harmless RAW conversion",
         "width": 1100,
-        "height": 1020,
+        "height": 1030,
         "minWidth": 900,
-        "minHeight": 900,
+        "minHeight": 910,
         "resizable": true,
         "fullscreen": false
       }

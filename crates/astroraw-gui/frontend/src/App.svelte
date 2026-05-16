@@ -7,6 +7,7 @@
   import FileList from "./lib/FileList.svelte";
   import ConvertPanel from "./lib/ConvertPanel.svelte";
   import ResultsPanel from "./lib/ResultsPanel.svelte";
+  import Footer from "./lib/Footer.svelte";
 
   let selectedFiles = [];
   let outputDir = "";
@@ -190,6 +191,7 @@
     </div>
 
   </div>
+  <Footer cliVersion="0.3.0" guiVersion="0.3.0" />
 </main>
 
 <style>

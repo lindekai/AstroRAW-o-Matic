@@ -60,13 +60,12 @@
 </script>
 
 <main>
-  <header>
-    <h1>AstroRAW-o-Matic</h1>
-    <span class="subtitle">Mostly harmless RAW conversion</span>
-  </header>
-
   <div class="layout">
-    <section class="left">
+    <aside class="left">
+      <SessionForm bind:session />
+    </aside>
+
+    <div class="right">
       <FileList files={selectedFiles} on:pick={pickFiles} />
       <ConvertPanel
         {outputDir}
@@ -78,11 +77,7 @@
       {#if results}
         <ResultsPanel {results} />
       {/if}
-    </section>
-
-    <section class="right">
-      <SessionForm bind:session />
-    </section>
+    </div>
   </div>
 </main>
 
@@ -100,47 +95,42 @@
     background: #1a202c;
     border: 1px solid #2d3748;
     color: #e2e8f0;
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 13px;
+    border-radius: 3px;
+    padding: 3px 6px;
+    font-size: 12px;
     width: 100%;
+    height: 24px;
   }
   :global(input:focus, select:focus) {
     outline: none;
     border-color: #63b3ed;
   }
-  :global(label) { color: #a0aec0; font-size: 12px; display: block; margin-bottom: 3px; }
-
-  main { display: flex; flex-direction: column; height: 100vh; }
-
-  header {
-    padding: 10px 16px;
-    background: #1a1f2e;
-    border-bottom: 1px solid #2d3748;
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    flex-shrink: 0;
+  :global(label) {
+    color: #718096;
+    font-size: 11px;
+    display: block;
+    margin-bottom: 2px;
+    white-space: nowrap;
   }
-  h1 { font-size: 16px; font-weight: 700; color: #63b3ed; }
-  .subtitle { font-size: 11px; color: #718096; font-style: italic; }
+
+  main { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
   .layout {
     display: grid;
-    grid-template-columns: 1fr 300px;
+    grid-template-columns: 380px 1fr;
     flex: 1;
     overflow: hidden;
   }
 
   .left {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
     border-right: 1px solid #2d3748;
+    overflow-y: auto;
+    background: #0f1117;
   }
 
   .right {
-    overflow-y: auto;
-    background: #13171f;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 </style>

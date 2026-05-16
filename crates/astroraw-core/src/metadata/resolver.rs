@@ -185,6 +185,8 @@ impl<'a> MetadataResolver<'a> {
             // Black/White levels
             if let Some(bl) = self.raw.black_level {
                 header.push_int("BLACKLVL", bl as i64, "Black level (ADU)");
+                // PEDESTAL is the keyword Siril reads for black level subtraction
+                header.push_int("PEDESTAL", bl as i64, "Black level pedestal (ADU)");
             }
             if let Some(wl) = self.raw.white_level {
                 header.push_int("WHITELEV", wl as i64, "White/saturation level (ADU)");

@@ -139,9 +139,8 @@ pub fn convert_single(input: &Path, request: &ConvertRequest) -> ConvertResult {
     raw_meta.black_level = Some(pixel_data.black_level as u32);
     raw_meta.white_level = Some(pixel_data.white_level as u32);
     raw_meta.wb_coeffs = Some(pixel_data.wb_coeffs);
-    if raw_meta.bayer_pattern.is_none() {
-        raw_meta.bayer_pattern = pixel_data.bayer_pattern.clone();
-    }
+    // Always use the pattern from read_raw_bayer() — it accounts for crop offset.
+    raw_meta.bayer_pattern = pixel_data.bayer_pattern.clone();
 
     // 4. Resolve merged metadata
     let filename = input.file_name().unwrap_or_default().to_string_lossy().to_string();

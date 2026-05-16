@@ -143,6 +143,19 @@ impl RawReader {
         let full_width = raw.width;
         let full_height = raw.height;
 
+        // Compute the effective Bayer pattern after cropping.
+        // rawler's cfa.name is relative to the active_area origin, not (0,0) of the full sensor.
+        // The crop offset relative to active_area determines the 2×2 grid shift.
+        let pre_crop_pattern = raw.camera.cfa.name.clone();
+        // rawler's cfa.name is relative to the full sensor (0,0).
+        // The crop position (crop_x, crop_y) from the full sensor determines the shift.
+        let (crop_x, crop_y) = raw.crop_area
+            .map(|c| (c.p.x, c.p.y))
+            .unwrap_or((0, 0));
+        let cropped_cfa_name = shift_bayer_pattern(&pre_crop_pattern, crop_x, crop_y);
+        debug!("Bayer: {} → {} (crop at full-sensor ({},{}))",
+            pre_crop_pattern, cropped_cfa_name, crop_x, crop_y);
+
         let all_pixels: Vec<u16> = match raw.data {
             rawler::RawImageData::Integer(pixels) => pixels,
             rawler::RawImageData::Float(_) => {
@@ -180,7 +193,7 @@ impl RawReader {
             (full_width as u32, full_height as u32, all_pixels)
         };
 
-        let bayer_pattern = raw.camera.cfa.name.clone();
+        let bayer_pattern = cropped_cfa_name;
         let black_level = raw.blacklevel.levels.first()
             .map(|r| r.as_f32() as u16)
             .unwrap_or(0);
@@ -209,6 +222,26 @@ fn parse_exif_datetime(s: &str) -> Option<DateTime<Utc>> {
     NaiveDateTime::parse_from_str(s.trim_matches('"'), "%Y:%m:%d %H:%M:%S")
         .ok()
         .map(|ndt| Utc.from_utc_datetime(&ndt))
+}
+
+/// Adjust a 4-letter Bayer pattern name (e.g. "RGGB") for a crop starting
+/// at (col_offset, row_offset) within the repeating 2×2 grid.
+fn shift_bayer_pattern(pattern: &str, col_offset: usize, row_offset: usize) -> String {
+    if pattern.len() != 4 {
+        return pattern.to_string();
+    }
+    let p: Vec<char> = pattern.chars().collect();
+    // 2×2 grid: [[p[0], p[1]], [p[2], p[3]]]
+    let grid = [[p[0], p[1]], [p[2], p[3]]];
+    let r = row_offset % 2;
+    let c = col_offset % 2;
+    let new_pattern = [
+        grid[r][c],
+        grid[r][(c + 1) % 2],
+        grid[(r + 1) % 2][c],
+        grid[(r + 1) % 2][(c + 1) % 2],
+    ];
+    new_pattern.iter().collect()
 }
 
 fn infer_bayer_pattern(make: Option<&str>) -> Option<String> {

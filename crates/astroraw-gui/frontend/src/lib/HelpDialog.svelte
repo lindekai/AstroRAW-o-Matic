@@ -1,8 +1,11 @@
 <script>
+  import { openUrl } from "@tauri-apps/plugin-opener";
   export let open = false;
   function close() { open = false; }
 
   let activeTab = "workflow";
+  const version = "0.3.0";
+  const discordUrl = "https://discord.gg/mvgC6aXY";
   const tabs = [
     { id: "workflow", label: "Workflow" },
     { id: "session",  label: "Session-Felder" },
@@ -129,7 +132,11 @@ astroraw-o-matic validate session.json
     </div>
 
     <div class="dialog-footer">
-      <span>AstroRAW-o-Matic v0.3.0 — Mostly harmless RAW conversion</span>
+      <span class="footer-left">AstroRAW-o-Matic v{version} — Mostly harmless RAW conversion</span>
+      <button class="footer-community" on:click={() => openUrl(discordUrl)}>
+        🔭 Dark Matters Community
+      </button>
+      <span class="footer-right">Author: Kai Linde</span>
       <button class="close-btn-bottom" on:click={close}>Schließen</button>
     </div>
 
@@ -242,13 +249,24 @@ astroraw-o-matic validate session.json
 
   .dialog-footer {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px 16px;
+    gap: 12px;
+    padding: 8px 16px;
     border-top: 1px solid #2d3748;
     flex-shrink: 0;
   }
-  .dialog-footer span { font-size: 11px; color: #4a5568; font-style: italic; }
+  .footer-left { font-size: 11px; color: #4a5568; font-style: italic; flex: 1; }
+  .footer-right { font-size: 11px; color: #4a5568; }
+  .footer-community {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    color: #63b3ed;
+    opacity: 0.8;
+    padding: 0;
+  }
+  .footer-community:hover { opacity: 1; }
 
   .close-btn-bottom {
     background: #2d3748;

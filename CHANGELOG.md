@@ -11,6 +11,30 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.3.0] — 2026-05-17
+
+### Fixed
+- **Critical**: Bayer pattern now correctly computed for cropped sensor area.
+  Canon 600D crop at (152,56) yields GBRG, not RGGB as previously assumed.
+  Photometric color calibration in Siril now matches CR2 direct import (< 3% deviation).
+- PEDESTAL keyword added so Siril correctly subtracts black level before debayering.
+- FITS string values no longer truncated (DATE-OBS, SWCREATE complete).
+- APERTURE omitted when EXIF returns 0 (manual lenses).
+- Crop of optical black sensor borders now applied correctly.
+
+### Added
+- FOCRATIO and APTDIA keywords in FITS header.
+- WB coefficients in FITS header (CBLACK_R/G/B).
+- Tauri + Svelte GUI scaffold with session form, file list, convert panel.
+- Drag & drop from macOS Finder in GUI.
+- JSON load/save via GUI toolbar with configurable filename pattern.
+- Session date/time fields with EXIF pre-fill on file drop.
+- Filter datalist: UV/IR, DNB, Halpha, OIII, SII, LRGB.
+
+---
+
+
+
 ## [0.2.0] — 2026-05-16
 
 ### Added

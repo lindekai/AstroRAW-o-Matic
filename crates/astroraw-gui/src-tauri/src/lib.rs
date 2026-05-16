@@ -18,6 +18,8 @@ pub fn run() {
             commands::inspect_file,
             commands::convert_files,
             commands::validate_session_file,
+            commands::load_session_json,
+            commands::save_session_json,
         ])
         .run(tauri::generate_context!())
         .expect("error while running AstroRAW-o-Matic");

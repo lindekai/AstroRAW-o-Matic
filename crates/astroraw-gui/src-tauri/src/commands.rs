@@ -1,4 +1,5 @@
 use std::path::PathBuf;
+use std::fs;
 use serde::{Deserialize, Serialize};
 
 use astroraw_core::{
@@ -113,6 +114,21 @@ pub fn convert_files(request: GuiConvertRequest) -> ConvertSummary {
             error: r.error,
         }).collect(),
     }
+}
+
+// ── Session JSON Load / Save ──────────────────────────────────────────────────
+
+#[tauri::command]
+pub fn load_session_json(path: String) -> Result<SessionMetadata, String> {
+    load_session_file(&PathBuf::from(&path))
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn save_session_json(path: String, session: SessionMetadata) -> Result<(), String> {
+    let json = serde_json::to_string_pretty(&session)
+        .map_err(|e| e.to_string())?;
+    fs::write(&path, json).map_err(|e| e.to_string())
 }
 
 // ── Validate ──────────────────────────────────────────────────────────────────

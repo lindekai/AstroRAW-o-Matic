@@ -152,7 +152,13 @@ impl<'a> MetadataResolver<'a> {
             let aperture = eq.and_then(|e| e.aperture).or(self.raw.aperture);
             if let Some(ap) = aperture {
                 if ap > 0.0 {
-                    header.push_float("APERTURE", ap, "Aperture f-number");
+                    header.push_float("APERTURE", ap, "Aperture diameter [mm]");
+                    header.push_float("APTDIA", ap, "Aperture diameter [mm]");
+                    // Focal ratio = focal length / aperture diameter
+                    if let Some(fl) = focallen {
+                        let ratio = fl / ap;
+                        header.push_float("FOCRATIO", ratio, "Focal ratio (f/number)");
+                    }
                 }
             }
 

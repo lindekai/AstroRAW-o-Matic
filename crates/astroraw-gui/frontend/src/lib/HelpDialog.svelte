@@ -70,7 +70,7 @@
         community: "Community",
         github: "GitHub",
         license: "Lizenz",
-        quote: "„Die Antwort ist 42. Das Bayer-Muster ist GBRG."",
+        quote: '„Die Antwort ist 42. Das Bayer-Muster ist GBRG."',
       },
     },
     en: {

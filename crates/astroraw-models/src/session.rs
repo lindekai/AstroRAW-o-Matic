@@ -59,6 +59,10 @@ pub struct OutputOptions {
     /// Append HISTORY records to FITS header
     #[serde(default = "default_true")]
     pub write_history: bool,
+
+    /// Filename pattern for exported JSON (GUI only). Placeholders: {object}, {date}, {observer}
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub json_filename_pattern: Option<String>,
 }
 
 impl Default for OutputOptions {
@@ -68,6 +72,7 @@ impl Default for OutputOptions {
             header_mode: default_header_mode(),
             overwrite: false,
             write_history: true,
+            json_filename_pattern: None,
         }
     }
 }

@@ -49,7 +49,7 @@
       camera: { make: "Canon", model: "", pixel_size_x: 4.3, pixel_size_y: 4.3 }
     },
     location: { latitude: null, longitude: null, elevation: null, site_name: "" },
-    output: { raw_mode: "raw_bayer", header_mode: "astro", overwrite: false, write_history: true }
+    output: { raw_mode: "raw_bayer", header_mode: "astro", overwrite: false, write_history: true, json_filename_pattern: "session_{object}_{date}" }
   };
 
   async function pickFiles() {
@@ -81,10 +81,21 @@
     }
   }
 
+  function resolveFilename(pattern, s) {
+    const date = new Date().toISOString().slice(0, 10);
+    return (pattern || "session")
+      .replace("{object}", (s.object || "session").replace(/\s+/g, "_"))
+      .replace("{date}", date)
+      .replace("{observer}", (s.observer || "").replace(/\s+/g, "_"))
+      + ".json";
+  }
+
   async function saveSession() {
+    const pattern = session.output?.json_filename_pattern;
+    const defaultName = resolveFilename(pattern, session);
     const file = await save({
       filters: [{ name: "Session JSON", extensions: ["json"] }],
-      defaultPath: "session.json"
+      defaultPath: defaultName
     });
     if (!file) return;
     try {

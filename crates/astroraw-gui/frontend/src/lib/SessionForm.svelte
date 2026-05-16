@@ -83,6 +83,12 @@
       <label class="ck"><input type="checkbox" bind:checked={session.output.overwrite} /> Overwrite FITS</label>
       <label class="ck"><input type="checkbox" bind:checked={session.output.write_history} /> Write HISTORY</label>
     </div>
+    <div class="f g2-span">
+      <label for="jsfn">JSON Filename Pattern</label>
+      <input id="jsfn" bind:value={session.output.json_filename_pattern}
+             placeholder="session_{object}_{date}" />
+      <span class="hint">Placeholders: {"{object}"} {"{date}"} {"{observer}"}</span>
+    </div>
   </div>
 
 </form>
@@ -109,6 +115,8 @@
     font-size: 11px; color: #a0aec0; cursor: pointer;
   }
   .ck input[type="checkbox"] { width: auto; height: auto; accent-color: #63b3ed; }
+
+  .hint { font-size: 9px; color: #4a5568; margin-top: 1px; }
 
   .computed {
     height: 22px;

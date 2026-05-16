@@ -12,6 +12,7 @@
     { id: "json",     label: "JSON-Muster" },
     { id: "fits",     label: "FITS-Header" },
     { id: "cli",      label: "CLI" },
+    { id: "about",    label: "About" },
   ];
 </script>
 
@@ -131,6 +132,46 @@ astroraw-o-matic convert ./RAW \
 astroraw-o-matic validate session.json
         </pre>
         <div class="note">Kurzname: <code>arom</code> (Alias anlegen mit <code>alias arom='astroraw-o-matic'</code>)</div>
+
+      {:else if activeTab === "about"}
+        <div class="about">
+          <div class="about-logo">🔭</div>
+          <h2>AstroRAW-o-Matic</h2>
+          <div class="about-version">Version {version}</div>
+          <div class="about-tagline">Mostly harmless RAW conversion</div>
+
+          <div class="about-section">
+            <strong>Autor</strong>
+            <p>Kai Linde</p>
+          </div>
+
+          <div class="about-section">
+            <strong>Community</strong>
+            <p>
+              <button class="link-btn" on:click={() => openUrl(discordUrl)}>
+                🔭 Dark Matters // Astro Community
+              </button>
+            </p>
+          </div>
+
+          <div class="about-section">
+            <strong>GitHub</strong>
+            <p>
+              <button class="link-btn" on:click={() => openUrl("https://github.com/lindekai/AstroRAW-o-Matic")}>
+                github.com/lindekai/AstroRAW-o-Matic
+              </button>
+            </p>
+          </div>
+
+          <div class="about-section">
+            <strong>Lizenz</strong>
+            <p>MIT License // © 2026 Kai Linde</p>
+          </div>
+
+          <div class="about-quote">
+            „The answer is 42. The Bayer pattern is GBRG."
+          </div>
+        </div>
       {/if}
 
     </div>
@@ -259,6 +300,18 @@ astroraw-o-matic validate session.json
     border-top: 1px solid #2d3748;
     flex-shrink: 0;
   }
+  .about { text-align: center; padding: 16px 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .about-logo { font-size: 48px; }
+  .about h2 { font-size: 20px; font-weight: 700; color: #63b3ed; margin: 0; }
+  .about-version { font-size: 13px; color: #718096; }
+  .about-tagline { font-size: 12px; color: #4a5568; font-style: italic; }
+  .about-section { text-align: center; }
+  .about-section strong { font-size: 11px; color: #63b3ed; text-transform: uppercase; letter-spacing: 0.8px; display: block; margin-bottom: 3px; }
+  .about-section p { font-size: 13px; color: #a0aec0; margin: 0; }
+  .link-btn { background: none; border: none; color: #63b3ed; cursor: pointer; font-size: 13px; padding: 0; text-decoration: underline; text-underline-offset: 2px; }
+  .link-btn:hover { color: #90cdf4; }
+  .about-quote { font-size: 11px; color: #4a5568; font-style: italic; margin-top: 8px; border-top: 1px solid #2d3748; padding-top: 12px; width: 100%; text-align: center; }
+
   .footer-left { font-size: 11px; color: #4a5568; font-style: italic; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .footer-right { font-size: 11px; color: #4a5568; white-space: nowrap; }
   .footer-community {

@@ -1,7 +1,12 @@
 <script>
+  import { openUrl } from "@tauri-apps/plugin-opener";
   export let cliVersion = "0.2.0";
   export let guiVersion = "0.2.0";
   const discordUrl = "https://discord.gg/mvgC6aXY";
+
+  function openDiscord() {
+    openUrl(discordUrl);
+  }
 </script>
 
 <footer>
@@ -12,9 +17,9 @@
   </div>
 
   <div class="center">
-    <a href={discordUrl} target="_blank" rel="noreferrer" class="community">
+    <button class="community" on:click={openDiscord}>
       🔭 Dark Matters Community
-    </a>
+    </button>
   </div>
 
   <div class="right">
@@ -68,7 +73,10 @@
   .community {
     font-size: 12px;
     color: #63b3ed;
-    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
     opacity: 0.8;
     transition: opacity 0.15s;
   }

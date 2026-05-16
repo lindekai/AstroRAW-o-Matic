@@ -52,6 +52,7 @@
       {:else if activeTab === "session"}
         <h3>Session-Felder erklärt</h3>
         <table>
+          <tbody>
           <tr><td>Object</td><td>Zielobjekt (z.B. M31, NGC 7000, Horsehead Nebula)</td></tr>
           <tr><td>Observer</td><td>Name des Beobachters — erscheint im FITS-Header als OBSERVER</td></tr>
           <tr><td>Session Date</td><td>Beobachtungsdatum — wird aus EXIF vorausgefüllt</td></tr>
@@ -67,16 +68,17 @@
           <tr><td>Site Name</td><td>Name des Beobachtungsorts</td></tr>
           <tr><td>Lat / Lon</td><td>Koordinaten → SITELAT / SITELONG im FITS-Header</td></tr>
           <tr><td>Elevation</td><td>Höhe über NN in Metern → SITEELEV im FITS-Header</td></tr>
+          </tbody>
         </table>
 
       {:else if activeTab === "json"}
         <h3>JSON Dateinamen-Muster</h3>
         <p>Das Feld <strong>JSON Filename Pattern</strong> im OUTPUT-Bereich steuert den Vorschlagsnamen beim Speichern.</p>
-        <table>
+        <table><tbody>
           <tr><td><code>{'{object}'}</code></td><td>Objektname (Leerzeichen → Unterstriche)</td></tr>
           <tr><td><code>{'{date}'}</code></td><td>Aktuelles Datum (YYYY-MM-DD)</td></tr>
           <tr><td><code>{'{observer}'}</code></td><td>Name des Beobachters</td></tr>
-        </table>
+        </tbody></table>
         <div class="example">
           <strong>Beispiele:</strong><br/>
           <code>session_{'{object}'}_{'{date}'}</code> → <em>session_Horsehead_Nebula_2026-05-17.json</em><br/>
@@ -86,7 +88,8 @@
       {:else if activeTab === "fits"}
         <h3>Wichtige FITS-Keywords</h3>
         <table>
-          <tr><th>Keyword</th><th>Inhalt</th><th>Quelle</th></tr>
+          <thead><tr><th>Keyword</th><th>Inhalt</th><th>Quelle</th></tr></thead>
+          <tbody>
           <tr><td>BAYERPAT</td><td>Bayer-Muster (z.B. GBRG)</td><td>rawler (automatisch)</td></tr>
           <tr><td>PEDESTAL</td><td>Schwarzpegel in ADU (~2046)</td><td>rawler (automatisch)</td></tr>
           <tr><td>BLACKLVL</td><td>Schwarzpegel in ADU</td><td>rawler (automatisch)</td></tr>
@@ -97,6 +100,7 @@
           <tr><td>FOCRATIO</td><td>Fokalverhältnis (f/Zahl)</td><td>Session (berechnet)</td></tr>
           <tr><td>CBLACK_R/G/B</td><td>Weißabgleich-Koeffizienten</td><td>rawler (automatisch)</td></tr>
           <tr><td>IMAGETYP</td><td>LIGHT / DARK / FLAT / BIAS</td><td>Session / CLI</td></tr>
+          </tbody>
         </table>
         <div class="note">
           <strong>Metadaten-Priorität:</strong><br/>

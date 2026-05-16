@@ -9,15 +9,27 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+---
+
+## [0.2.0] — 2026-05-16
+
 ### Added
 - `rawler` integration: real Canon CR2 Bayer pixel extraction (14-bit, RGGB)
-- Black level and white level from rawler written to FITS header (BLACKLVL, WHITELEV)
-- Bayer pattern now read directly from rawler CFA data, not just inferred
-- Conversion pipeline: pixel data read before metadata resolve so all rawler values flow into FITS header
+- Black/white levels from rawler written to FITS header (BLACKLVL, WHITELEV)
+- As-shot white balance coefficients in FITS header (CBLACK_R, CBLACK_G, CBLACK_B)
+- Automatic crop of optical black sensor borders (crop_area)
+- `date_obs` override via `--date-obs` CLI, session JSON and `file_overrides`
+- Bayer pattern sourced directly from rawler CFA data
+
+### Fixed
+- FITS string values no longer truncated (DATE-OBS, SWCREATE now complete)
+- APERTURE omitted when value is 0 (manual lenses / missing EXIF)
+- Stride mismatch between FITS header and pixel data (caused stripes) resolved
 
 ### Changed
-- `read_raw_bayer()` no longer returns zero-filled placeholder; now returns real pixel data
-- Metadata resolution moved after pixel read so black/white levels are available
+- `read_raw_bayer()` returns real pixel data instead of zero-filled placeholder
+- Metadata resolution happens after pixel read so rawler values flow into header
+- FOCALLEN and APERTURE from session JSON override EXIF
 
 ---
 

@@ -1,4 +1,4 @@
-# AstroRAW-o-Matic — User Guide
+# AstroRAW-o-Matic // User Guide
 
 **Version 0.3.0** | [Deutsche Version](USER_GUIDE.de.md) | [Dark Matters Community](https://discord.gg/mvgC6aXY)
 
@@ -19,7 +19,7 @@
 
 ## What is AstroRAW-o-Matic?
 
-AstroRAW-o-Matic converts DSLR RAW files (Canon CR2) into FITS files for astrophotography. It is the clean step **before** stacking — not a replacement for PixInsight, Siril, or DeepSkyStacker, but the preparation for them.
+AstroRAW-o-Matic converts DSLR RAW files (Canon CR2) into FITS files for astrophotography. It is the clean step **before** stacking // not a replacement for PixInsight, Siril, or DeepSkyStacker, but the preparation for them.
 
 **What it does:**
 - Preserves RAW Bayer data without debayering
@@ -98,9 +98,9 @@ DSLR Frames (CR2)
 
 ### Loading Files
 
-**Option 1 — Drag & Drop:** Drag CR2 files from Finder directly into the window.
+**Option 1 // Drag & Drop:** Drag CR2 files from Finder directly into the window.
 
-**Option 2 — File Dialog:** Click **+ Add Files**.
+**Option 2 // File Dialog:** Click **+ Add Files**.
 
 Session Date and Time are automatically pre-filled from the EXIF of the first loaded file.
 
@@ -126,8 +126,8 @@ Session Date and Time are automatically pre-filled from the EXIF of the first lo
 
 ### JSON Load and Save
 
-- **📂 Load JSON** — load an existing session JSON
-- **💾 Save JSON** — save current session settings
+- **📂 Load JSON** // load an existing session JSON
+- **💾 Save JSON** // save current session settings
 
 **Filename pattern** (field in OUTPUT section):
 
@@ -149,20 +149,20 @@ Example: `session_{object}_{date}` → `session_Horsehead_Nebula_2026-05-17.json
 
 ## CLI Reference
 
-### `inspect` — Show metadata
+### `inspect` // Show metadata
 
 ```bash
 astroraw-o-matic inspect image.CR2
 astroraw-o-matic inspect image.CR2 --json   # machine-readable
 ```
 
-### `validate` — Check session JSON
+### `validate` // Check session JSON
 
 ```bash
 astroraw-o-matic validate session.json
 ```
 
-### `convert` — Convert
+### `convert` // Convert
 
 ```bash
 # Single file
@@ -301,13 +301,13 @@ astroraw-o-matic convert ./RAW \
 The FITS contains raw linear sensor data without white balance or black level correction. After debayering and photometric color calibration in Siril, results are essentially identical (< 3% deviation).
 
 **What Bayer pattern does the Canon 600D/600Da use?**
-GBRG — set automatically and correctly. Do not change manually.
+GBRG // set automatically and correctly. Do not change manually.
 
 **What if the camera clock was wrong?**
 Use `--date-obs "2024-01-09T21:34:00"` in the CLI, or `date_obs` in the session JSON, or the `session_date` + `session_time` fields in the GUI.
 
 **Can I have multiple objects in one batch conversion?**
-Yes — use `file_overrides` in the session JSON to override `object`, `frame_type`, `filter`, and `date_obs` for individual files.
+Yes // use `file_overrides` in the session JSON to override `object`, `frame_type`, `filter`, and `date_obs` for individual files.
 
 ---
 

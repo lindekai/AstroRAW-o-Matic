@@ -21,7 +21,7 @@ walkdir = { workspace = true }
 # EXIF metadata extraction
 kamadak-exif = "0.5"
 
-# RAW pixel data extraction — pure Rust, MIT licensed
+# RAW pixel data extraction // pure Rust, MIT licensed
 rawler = "0.6"
 
 [dev-dependencies]

@@ -6,7 +6,7 @@ AstroRAW-o-Matic is MIT licensed.
 
 | Dependency | License | Notes |
 |------------|---------|-------|
-| kamadak-exif | MIT | Pure Rust EXIF reader — MIT compatible |
+| kamadak-exif | MIT | Pure Rust EXIF reader // MIT compatible |
 | serde / serde_json | MIT/Apache-2.0 | Standard, fully compatible |
 | clap | MIT/Apache-2.0 | Fully compatible |
 | thiserror | MIT/Apache-2.0 | Fully compatible |
@@ -35,6 +35,6 @@ Alternatively, `rawler` (pure Rust RAW decoder, MIT licensed) is being evaluated
 
 ## FITS libraries
 
-`fitsio` / `cfitsio` bindings: cfitsio itself is BSD/NASA open-source license — compatible with MIT for distribution.
+`fitsio` / `cfitsio` bindings: cfitsio itself is BSD/NASA open-source license // compatible with MIT for distribution.
 
 For the MVP we use our own minimal FITS writer, avoiding external C dependencies entirely.

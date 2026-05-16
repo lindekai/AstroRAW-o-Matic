@@ -1,6 +1,6 @@
 # AstroRAW-o-Matic v0.3.0
 
-**Mostly harmless RAW conversion — now with correct colors.**
+**Mostly harmless RAW conversion // now with correct colors.**
 
 ---
 
@@ -10,7 +10,7 @@
 
 Das wichtigste Update dieser Version betrifft die Farbkanalzuweisung im FITS-Output.
 
-Bisherige Versionen schrieben `BAYERPAT=RGGB` für Canon-Kameras — eine falsche Annahme. Die Canon EOS 600D (und ähnliche Modelle) liefern nach rawlers Crop-Berechnung tatsächlich das Muster **GBRG**. Das führte dazu, dass Grün- und Blaukanal beim Debayering in Siril vertauscht wurden.
+Bisherige Versionen schrieben `BAYERPAT=RGGB` für Canon-Kameras // eine falsche Annahme. Die Canon EOS 600D (und ähnliche Modelle) liefern nach rawlers Crop-Berechnung tatsächlich das Muster **GBRG**. Das führte dazu, dass Grün- und Blaukanal beim Debayering in Siril vertauscht wurden.
 
 **Auswirkung der Korrektur**, gemessen mit photometrischer Farbkalibrierung (Siril PCC, Gaia DR3):
 
@@ -23,7 +23,7 @@ Bisherige Versionen schrieben `BAYERPAT=RGGB` für Canon-Kameras — eine falsch
 | B1 (Hintergrund G) | 957.0 | 944.2 | −1.3% |
 | B2 (Hintergrund B) | 160.0 | 160.7 | +0.4% |
 
-Die Konvertierung ist damit photometrisch verifiziert. Die Restabweichung von unter 3% ist auf unterschiedliche Debayering-Algorithmen zwischen Sirils CR2-Pipeline und der FITS-Pipeline zurückzuführen — im normalen Toleranzbereich für Astrofotografie-Workflows.
+Die Konvertierung ist damit photometrisch verifiziert. Die Restabweichung von unter 3% ist auf unterschiedliche Debayering-Algorithmen zwischen Sirils CR2-Pipeline und der FITS-Pipeline zurückzuführen // im normalen Toleranzbereich für Astrofotografie-Workflows.
 
 ### Schwarzpegel-Fix (PEDESTAL)
 
@@ -31,8 +31,8 @@ Siril liest den Schwarzpegel aus dem FITS-Keyword `PEDESTAL`. Bisher wurde nur `
 
 ### FITS-Header-Korrekturen
 
-- `DATE-OBS` wurde bisher auf 18 Zeichen abgeschnitten — jetzt vollständig
-- `SWCREATE` wurde abgeschnitten — jetzt vollständig
+- `DATE-OBS` wurde bisher auf 18 Zeichen abgeschnitten // jetzt vollständig
+- `SWCREATE` wurde abgeschnitten // jetzt vollständig
 - `APERTURE` wird nicht mehr geschrieben wenn EXIF den Wert 0 liefert (Manualobjektive)
 
 ### Neue FITS-Keywords
@@ -56,7 +56,7 @@ Erster Entwurf der Tauri + Svelte-Oberfläche:
 - Fokalverhältnis wird live aus Brennweite und Öffnung berechnet
 - Konvertierung direkt aus der GUI
 
-Die GUI ist noch Early Alpha — für produktive Konvertierungen empfehlen wir weiterhin die CLI.
+Die GUI ist noch Early Alpha // für produktive Konvertierungen empfehlen wir weiterhin die CLI.
 
 ---
 

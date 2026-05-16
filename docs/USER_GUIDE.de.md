@@ -1,4 +1,4 @@
-# AstroRAW-o-Matic — Benutzerhandbuch
+# AstroRAW-o-Matic // Benutzerhandbuch
 
 **Version 0.3.0** | [English version](USER_GUIDE.md) | [Dark Matters Community](https://discord.gg/mvgC6aXY)
 
@@ -19,7 +19,7 @@
 
 ## Was ist AstroRAW-o-Matic?
 
-AstroRAW-o-Matic konvertiert DSLR-RAW-Dateien (Canon CR2) in FITS-Dateien für die Astrofotografie. Es ist der saubere Schritt **vor** dem Stacking — kein Ersatz für PixInsight, Siril oder DeepSkyStacker, sondern die Vorbereitung dafür.
+AstroRAW-o-Matic konvertiert DSLR-RAW-Dateien (Canon CR2) in FITS-Dateien für die Astrofotografie. Es ist der saubere Schritt **vor** dem Stacking // kein Ersatz für PixInsight, Siril oder DeepSkyStacker, sondern die Vorbereitung dafür.
 
 **Was das Tool tut:**
 - RAW-Bayer-Daten ohne Debayering erhalten
@@ -98,9 +98,9 @@ DSLR-Aufnahmen (CR2)
 
 ### Dateien laden
 
-**Option 1 — Drag & Drop:** CR2-Dateien aus dem Finder direkt ins Fenster ziehen.
+**Option 1 // Drag & Drop:** CR2-Dateien aus dem Finder direkt ins Fenster ziehen.
 
-**Option 2 — Datei-Dialog:** Auf **+ Add Files** klicken.
+**Option 2 // Datei-Dialog:** Auf **+ Add Files** klicken.
 
 Session Date und Session Time werden automatisch aus dem EXIF der ersten geladenen Datei vorausgefüllt.
 
@@ -126,8 +126,8 @@ Session Date und Session Time werden automatisch aus dem EXIF der ersten geladen
 
 ### JSON laden und speichern
 
-- **📂 Load JSON** — bestehende Session-JSON laden
-- **💾 Save JSON** — aktuelle Session-Einstellungen speichern
+- **📂 Load JSON** // bestehende Session-JSON laden
+- **💾 Save JSON** // aktuelle Session-Einstellungen speichern
 
 **Dateinamen-Muster** (Feld im OUTPUT-Bereich):
 
@@ -149,20 +149,20 @@ Beispiel: `session_{object}_{date}` → `session_Horsehead_Nebula_2026-05-17.jso
 
 ## CLI-Referenz
 
-### `inspect` — Metadaten anzeigen
+### `inspect` // Metadaten anzeigen
 
 ```bash
 astroraw-o-matic inspect bild.CR2
 astroraw-o-matic inspect bild.CR2 --json   # maschinenlesbar
 ```
 
-### `validate` — Session-JSON prüfen
+### `validate` // Session-JSON prüfen
 
 ```bash
 astroraw-o-matic validate session.json
 ```
 
-### `convert` — Konvertieren
+### `convert` // Konvertieren
 
 ```bash
 # Einzeldatei
@@ -301,13 +301,13 @@ astroraw-o-matic convert ./RAW \
 Das FITS enthält rohe lineare Sensordaten ohne Weißabgleich oder Schwarzpegel-Korrektur. Nach Debayering und photometrischer Kalibrierung in Siril sind die Ergebnisse identisch (< 3% Abweichung).
 
 **Welches Bayer-Muster hat die Canon 600D/600Da?**
-GBRG — wird automatisch korrekt gesetzt. Nicht manuell ändern.
+GBRG // wird automatisch korrekt gesetzt. Nicht manuell ändern.
 
 **Was tun wenn das Datum in der Kamera falsch war?**
 `--date-obs "2024-01-09T21:34:00"` in der CLI, oder `date_obs` im Session-JSON, oder `session_date` + `session_time` in der GUI.
 
 **Kann ich mehrere verschiedene Objekte in einer Batch-Konvertierung haben?**
-Ja — über `file_overrides` im Session-JSON kannst du für einzelne Dateien `object`, `frame_type`, `filter` und `date_obs` überschreiben.
+Ja // über `file_overrides` im Session-JSON kannst du für einzelne Dateien `object`, `frame_type`, `filter` und `date_obs` überschreiben.
 
 ---
 

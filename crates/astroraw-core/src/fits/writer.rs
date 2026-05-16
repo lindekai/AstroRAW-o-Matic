@@ -64,7 +64,7 @@ impl FitsWriter {
         let kw_len = kw.len().min(8);
         card[..kw_len].copy_from_slice(&kw[..kw_len]);
 
-        // COMMENT / HISTORY / BLANK — value fills rest of card
+        // COMMENT / HISTORY / BLANK // value fills rest of card
         if matches!(rec.keyword.as_str(), "COMMENT" | "HISTORY" | "CONTINUE") {
             if let FitsValue::Str(ref s) = rec.value {
                 let s_bytes = s.as_bytes();
@@ -90,7 +90,7 @@ impl FitsWriter {
             card[11..11 + content_len].copy_from_slice(content_bytes);
             card[11 + content_len] = b'\'';
 
-            // Comment after closing quote — must start at col 32+ and fit in card
+            // Comment after closing quote // must start at col 32+ and fit in card
             let comment_start = (11 + content_len + 1).max(32).min(FITS_RECORD_SIZE - 2);
             if let Some(ref comment) = rec.comment {
                 if comment_start + 2 < FITS_RECORD_SIZE {
@@ -105,7 +105,7 @@ impl FitsWriter {
             return Ok(card);
         }
 
-        // Numeric / bool values — right-justified in columns 11-30
+        // Numeric / bool values // right-justified in columns 11-30
         let value_str = match &rec.value {
             FitsValue::Bool(b) => format!("{:>20}", if *b { "T" } else { "F" }),
             FitsValue::Int(i)  => format!("{:>20}", i),

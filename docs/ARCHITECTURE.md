@@ -4,14 +4,14 @@
 
 ```
 AstroRAW-o-Matic (Cargo workspace)
-├── crates/astroraw-models   — shared data types, no logic
-├── crates/astroraw-core     — engine: RAW in, FITS out
-└── crates/astroraw-cli      — CLI frontend
+├── crates/astroraw-models   // shared data types, no logic
+├── crates/astroraw-core     // engine: RAW in, FITS out
+└── crates/astroraw-cli      // CLI frontend
 ```
 
 Future:
 ```
-└── crates/astroraw-gui      — Tauri GUI frontend (same engine)
+└── crates/astroraw-gui      // Tauri GUI frontend (same engine)
 ```
 
 ---
@@ -20,10 +20,10 @@ Future:
 
 Pure data types. No I/O, no logic. Shared by core and all frontends.
 
-- `SessionMetadata` — the session JSON schema
-- `FitsHeader` / `FitsHeaderRecord` / `FitsValue` — FITS header representation
-- `RawMetadata` — metadata extracted from RAW EXIF
-- `FrameType` — Light / Dark / Flat / Bias
+- `SessionMetadata` // the session JSON schema
+- `FitsHeader` / `FitsHeaderRecord` / `FitsValue` // FITS header representation
+- `RawMetadata` // metadata extracted from RAW EXIF
+- `FrameType` // Light / Dark / Flat / Bias
 - `EquipmentMetadata`, `CameraMetadata`, `LocationMetadata`
 
 ---
@@ -59,10 +59,10 @@ Reads and deserializes a session JSON file into `SessionMetadata`.
 Checks a `SessionMetadata` for missing or suspicious fields. Returns a `ValidationReport`.
 
 ### Top-level API
-- `collect_raw_files(path, recursive)` — enumerate supported RAW files
-- `convert_single(path, request)` — convert one file, return `ConvertResult`
-- `convert_batch(request)` — convert many files, return `BatchSummary`
-- `load_session_file(path)` — load session JSON
+- `collect_raw_files(path, recursive)` // enumerate supported RAW files
+- `convert_single(path, request)` // convert one file, return `ConvertResult`
+- `convert_batch(request)` // convert many files, return `BatchSummary`
+- `load_session_file(path)` // load session JSON
 
 ---
 
@@ -71,13 +71,13 @@ Checks a `SessionMetadata` for missing or suspicious fields. Returns a `Validati
 Thin layer. Parses `clap` args, builds a `ConvertRequest`, calls the engine, renders output.
 
 ### Subcommands
-- `convert` — batch or single file conversion
-- `inspect` — print RAW metadata (human or JSON)
-- `validate` — check session JSON
+- `convert` // batch or single file conversion
+- `inspect` // print RAW metadata (human or JSON)
+- `validate` // check session JSON
 
 ### Exit codes
-- `0` — success
-- `1` — one or more errors (files failed, invalid JSON, etc.)
+- `0` // success
+- `1` // one or more errors (files failed, invalid JSON, etc.)
 
 ---
 

@@ -17,7 +17,7 @@ pub struct RawMetadata {
     pub white_level: Option<u32>,
     pub focal_length: Option<f64>,
     pub aperture: Option<f64>,
-    /// As-shot WB coefficients [R, G, B, G2] — None if not available
+    /// As-shot WB coefficients [R, G, B, G2] // None if not available
     pub wb_coeffs: Option<[f32; 4]>,
 }
 

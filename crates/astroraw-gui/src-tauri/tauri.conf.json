@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "AstroRAW-o-Matic — Mostly harmless RAW conversion",
+        "title": "AstroRAW-o-Matic // Mostly harmless RAW conversion",
         "width": 1100,
         "height": 1030,
         "minWidth": 900,

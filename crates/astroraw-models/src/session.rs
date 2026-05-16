@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 use crate::{EquipmentMetadata, LocationMetadata, FrameType};
 
-/// Top-level session metadata — the "contract" between CLI, engine and future GUI.
+/// Top-level session metadata // the "contract" between CLI, engine and future GUI.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SessionMetadata {
     /// Schema version for forward-compatibility checks
@@ -20,7 +20,7 @@ pub struct SessionMetadata {
     pub session_date: Option<String>,
     /// Session time (UTC): "21:34:00"
     pub session_time: Option<String>,
-    /// Full DATE-OBS override — takes priority over session_date + session_time + EXIF
+    /// Full DATE-OBS override // takes priority over session_date + session_time + EXIF
     pub date_obs: Option<String>,
 
     // --- Equipment ---

@@ -81,7 +81,7 @@ impl<'a> MetadataResolver<'a> {
             }
         }
 
-        // --- Date of observation — priority: file_override > date_obs > session_date+time > EXIF ---
+        // --- Date of observation // priority: file_override > date_obs > session_date+time > EXIF ---
         let date_obs = file_override.and_then(|f| f.date_obs.clone())
             .or_else(|| self.session.date_obs.clone())
             .or_else(|| {
@@ -119,7 +119,7 @@ impl<'a> MetadataResolver<'a> {
 
             header.push_str("COLORTYP", "RAW", "Color type: RAW Bayer mosaic");
 
-            // Pixel size (µm) — Canon 600D: 4.3µm
+            // Pixel size (µm) // Canon 600D: 4.3µm
             let px = eq.and_then(|e| e.camera.as_ref()).and_then(|c| c.pixel_size_x).unwrap_or(4.3);
             let py = eq.and_then(|e| e.camera.as_ref()).and_then(|c| c.pixel_size_y).unwrap_or(4.3);
             header.push_float("XPIXSZ", px, "Pixel width [micron]");
@@ -129,14 +129,14 @@ impl<'a> MetadataResolver<'a> {
             let bitdepth = self.raw.bit_depth.unwrap_or(14);
             header.push_int("BITDEPTH", bitdepth as i64, "ADC bit depth of sensor");
 
-            // Frame type — priority: CLI > file_override > session
+            // Frame type // priority: CLI > file_override > session
             let frame_type = frame_type_cli
                 .or_else(|| file_override.and_then(|f| f.frame_type))
                 .or(self.session.frame_type)
                 .unwrap_or(FrameType::Light);
             header.push_str("IMAGETYP", frame_type.fits_imagetyp(), "Frame type");
 
-            // Object — priority: CLI > file_override > session
+            // Object // priority: CLI > file_override > session
             let object = object_cli
                 .map(|s| s.to_string())
                 .or_else(|| file_override.and_then(|f| f.object.clone()))
@@ -150,13 +150,13 @@ impl<'a> MetadataResolver<'a> {
                 header.push_str("TELESCOP", tel, "Telescope or lens");
             }
 
-            // Focal length — session JSON overrides EXIF (important for telescopes)
+            // Focal length // session JSON overrides EXIF (important for telescopes)
             let focallen = eq.and_then(|e| e.focal_length).or(self.raw.focal_length);
             if let Some(fl) = focallen {
                 header.push_float("FOCALLEN", fl, "Focal length [mm]");
             }
 
-            // Aperture — skip if 0 or negative (EXIF sometimes returns 0 for manual lenses)
+            // Aperture // skip if 0 or negative (EXIF sometimes returns 0 for manual lenses)
             let aperture = eq.and_then(|e| e.aperture).or(self.raw.aperture);
             if let Some(ap) = aperture {
                 if ap > 0.0 {

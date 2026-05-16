@@ -11,7 +11,7 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.3.0] — 2026-05-17
+## [0.3.0] // 2026-05-17
 
 ### Fixed
 - **Critical**: Bayer pattern now correctly computed for cropped sensor area.
@@ -35,7 +35,7 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 
 
-## [0.2.0] — 2026-05-16
+## [0.2.0] // 2026-05-16
 
 ### Added
 - `rawler` integration: real Canon CR2 Bayer pixel extraction (14-bit, RGGB)
@@ -57,13 +57,13 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.1.0] — 2026-05-15
+## [0.1.0] // 2026-05-15
 
 ### Added
 - Initial project structure (Cargo workspace)
-- `astroraw-models`: shared data models — `SessionMetadata`, `FitsHeader`, `FrameType`, `RawMetadata`
-- `astroraw-core`: engine — RAW EXIF extraction, metadata resolution, FITS 16-bit writer
-- `astroraw-cli`: CLI — `convert`, `inspect`, `validate` subcommands
+- `astroraw-models`: shared data models // `SessionMetadata`, `FitsHeader`, `FrameType`, `RawMetadata`
+- `astroraw-core`: engine // RAW EXIF extraction, metadata resolution, FITS 16-bit writer
+- `astroraw-cli`: CLI // `convert`, `inspect`, `validate` subcommands
 - Session JSON schema v1.0
 - Metadata priority chain: file override > session JSON > RAW EXIF > defaults
 - Bayer pattern inference for Canon cameras

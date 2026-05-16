@@ -22,7 +22,7 @@ use crate::{
     session::loader::load_session,
 };
 
-/// Top-level conversion request — everything the engine needs for one batch.
+/// Top-level conversion request // everything the engine needs for one batch.
 #[derive(Debug, Clone)]
 pub struct ConvertRequest {
     pub inputs: Vec<PathBuf>,
@@ -118,7 +118,7 @@ pub fn convert_single(input: &Path, request: &ConvertRequest) -> ConvertResult {
         };
     }
 
-    // 2. Read RAW pixel data (rawler) — provides real Bayer data + black/white levels
+    // 2. Read RAW pixel data (rawler) // provides real Bayer data + black/white levels
     let pixel_data = match RawReader::read_raw_bayer(input) {
         Ok(d) => d,
         Err(e) => {
@@ -132,14 +132,14 @@ pub fn convert_single(input: &Path, request: &ConvertRequest) -> ConvertResult {
         }
     };
 
-    // 3. Feed rawler values back into metadata — always use actual pixel dimensions
+    // 3. Feed rawler values back into metadata // always use actual pixel dimensions
     //    to avoid stride mismatch between FITS header and data (causes stripes).
     raw_meta.width = Some(pixel_data.width);
     raw_meta.height = Some(pixel_data.height);
     raw_meta.black_level = Some(pixel_data.black_level as u32);
     raw_meta.white_level = Some(pixel_data.white_level as u32);
     raw_meta.wb_coeffs = Some(pixel_data.wb_coeffs);
-    // Always use the pattern from read_raw_bayer() — it accounts for crop offset.
+    // Always use the pattern from read_raw_bayer() // it accounts for crop offset.
     raw_meta.bayer_pattern = pixel_data.bayer_pattern.clone();
 
     // 4. Resolve merged metadata

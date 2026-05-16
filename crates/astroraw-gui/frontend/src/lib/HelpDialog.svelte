@@ -20,7 +20,7 @@
   <div class="dialog" on:click|stopPropagation role="document">
 
     <div class="dialog-header">
-      <span class="title">AstroRAW-o-Matic — Hilfe</span>
+      <span class="title">AstroRAW-o-Matic // Hilfe</span>
       <button class="close-btn" on:click={close}>✕</button>
     </div>
 
@@ -54,9 +54,9 @@
         <table>
           <tbody>
           <tr><td>Object</td><td>Zielobjekt (z.B. M31, NGC 7000, Horsehead Nebula)</td></tr>
-          <tr><td>Observer</td><td>Name des Beobachters — erscheint im FITS-Header als OBSERVER</td></tr>
-          <tr><td>Session Date</td><td>Beobachtungsdatum — wird aus EXIF vorausgefüllt</td></tr>
-          <tr><td>Session Time</td><td>Beobachtungszeit (UTC) — wird aus EXIF vorausgefüllt</td></tr>
+          <tr><td>Observer</td><td>Name des Beobachters // erscheint im FITS-Header als OBSERVER</td></tr>
+          <tr><td>Session Date</td><td>Beobachtungsdatum // wird aus EXIF vorausgefüllt</td></tr>
+          <tr><td>Session Time</td><td>Beobachtungszeit (UTC) // wird aus EXIF vorausgefüllt</td></tr>
           <tr><td>Frame Type</td><td>Light / Dark / Flat / Bias → IMAGETYP im FITS-Header</td></tr>
           <tr><td>Filter</td><td>Verwendeter Filter (UV/IR, DNB, Halpha, OIII, SII, L, R, G, B)</td></tr>
           <tr><td>Camera Model</td><td>Kameramodell → INSTRUME im FITS-Header</td></tr>
@@ -136,7 +136,7 @@ astroraw-o-matic validate session.json
     </div>
 
     <div class="dialog-footer">
-      <span class="footer-left">AstroRAW-o-Matic v{version} — Mostly harmless RAW conversion</span>
+      <span class="footer-left">AstroRAW-o-Matic v{version} // Mostly harmless RAW conversion</span>
       <button class="footer-community" on:click={() => openUrl(discordUrl)}>
         🔭 Dark Matters Community
       </button>
@@ -259,8 +259,8 @@ astroraw-o-matic validate session.json
     border-top: 1px solid #2d3748;
     flex-shrink: 0;
   }
-  .footer-left { font-size: 11px; color: #4a5568; font-style: italic; flex: 1; }
-  .footer-right { font-size: 11px; color: #4a5568; }
+  .footer-left { font-size: 11px; color: #4a5568; font-style: italic; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .footer-right { font-size: 11px; color: #4a5568; white-space: nowrap; }
   .footer-community {
     background: none;
     border: none;

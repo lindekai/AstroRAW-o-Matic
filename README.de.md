@@ -2,12 +2,12 @@
 
 **Mostly harmless RAW conversion.**
 
-> **⚠️ Frühes Alpha-Stadium — noch nicht für den Produktivbetrieb geeignet.**
+> **⚠️ Frühes Alpha-Stadium // noch nicht für den Produktivbetrieb geeignet.**
 > Die Kernarchitektur und CLI sind funktionsfähig, aber das Projekt befindet sich in aktiver Entwicklung. Breaking Changes sind möglich. Feedback und Beiträge sind willkommen.
 
 > *„Der Weltraum ist groß. Du wirst nicht glauben, wie unvorstellbar, unfassbar, schwindelerregend groß er ist. Und CR2-Dateien sind es auch."*
 
-AstroRAW-o-Matic ist ein reproduzierbares, workflow-orientiertes RAW-zu-FITS-Konvertierungstool für Astrofotografen. Es ist der saubere erste Schritt vor dem Stacking und der Bildbearbeitung — kein Konkurrent zu PixInsight, Siril oder DeepSkyStacker, sondern das Tool, das du *davor* einsetzt.
+AstroRAW-o-Matic ist ein reproduzierbares, workflow-orientiertes RAW-zu-FITS-Konvertierungstool für Astrofotografen. Es ist der saubere erste Schritt vor dem Stacking und der Bildbearbeitung // kein Konkurrent zu PixInsight, Siril oder DeepSkyStacker, sondern das Tool, das du *davor* einsetzt.
 
 Es nimmt deine DSLR-RAW-Dateien und verwandelt sie in sauber geheaderte, reproduzierbare FITS-Dateien, die direkt von deiner Stacking-Software verarbeitet werden können.
 
@@ -15,7 +15,7 @@ Es nimmt deine DSLR-RAW-Dateien und verwandelt sie in sauber geheaderte, reprodu
 
 ## Community
 
-**Dark Matters — Astro Community**
+**Dark Matters // Astro Community**
 Fragen, Feedback und Diskussionen rund um AstroRAW-o-Matic findest du auf dem Dark Matters Discord:
 
 > 🔗 [discord.gg/mvgC6aXY](https://discord.gg/mvgC6aXY)
@@ -26,11 +26,11 @@ Fragen, Feedback und Diskussionen rund um AstroRAW-o-Matic findest du auf dem Da
 
 Bestehende RAW-zu-FITS-Tools sind technisch veraltet, schlecht dokumentiert und ohne Workflow-Bewusstsein entwickelt. AstroRAW-o-Matic ist modern, CLI-first und session-orientiert aufgebaut:
 
-- **Reproduzierbar**: Die Session-JSON speichert deine Equipment- und Beobachtungsdaten — führe dieselbe Konvertierung Monate später erneut aus und erhalte dasselbe Ergebnis.
+- **Reproduzierbar**: Die Session-JSON speichert deine Equipment- und Beobachtungsdaten // führe dieselbe Konvertierung Monate später erneut aus und erhalte dasselbe Ergebnis.
 - **Workflow-orientiert**: Entwickelt als der Schritt *vor* dem Stacking, nicht als Ersatz dafür.
 - **CLI-first**: Von Anfang an in Skripten, Pipelines und Automatisierungen einsetzbar.
 - **GitHub-first**: Professionelle Struktur, Open Source, MIT-Lizenz.
-- **Engine / UI getrennt**: Dieselbe Engine wird später eine GUI antreiben — kein Spaghetti-Code.
+- **Engine / UI getrennt**: Dieselbe Engine wird später eine GUI antreiben // kein Spaghetti-Code.
 
 ---
 
@@ -79,9 +79,9 @@ Zum PATH hinzufügen oder Alias anlegen:
 alias arom='astroraw-o-matic'
 ```
 
-### macOS (Homebrew) — demnächst
-### Windows — Binary-Releases geplant
-### Linux — Binary-Releases geplant
+### macOS (Homebrew) // demnächst
+### Windows // Binary-Releases geplant
+### Linux // Binary-Releases geplant
 
 ---
 
@@ -266,7 +266,7 @@ AstroRAW-o-Matic
 │   ├── astroraw-core/       # Engine: RAW lesen, Metadaten auflösen, FITS schreiben
 │   └── astroraw-cli/        # CLI-Frontend (nutzt Core, keine UI-Abhängigkeiten)
 └── (zukünftig)
-    └── astroraw-gui/        # Tauri-GUI — gleiche Engine, anderes Frontend
+    └── astroraw-gui/        # Tauri-GUI // gleiche Engine, anderes Frontend
 ```
 
 ---
@@ -325,7 +325,7 @@ cargo run --bin astroraw-o-matic -- --help
 
 ## Lizenz
 
-MIT — Copyright (c) 2026 Kai Linde — siehe [LICENSE](LICENSE).
+MIT // Copyright (c) 2026 Kai Linde // siehe [LICENSE](LICENSE).
 
 ---
 

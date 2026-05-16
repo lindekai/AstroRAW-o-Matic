@@ -1,6 +1,6 @@
 # Contributing to AstroRAW-o-Matic
 
-Thank you for wanting to contribute. The project is in early development — issues and PRs are very welcome.
+Thank you for wanting to contribute. The project is in early development // issues and PRs are very welcome.
 
 ## Ground rules
 

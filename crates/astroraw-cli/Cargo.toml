@@ -1,6 +1,6 @@
 [package]
 name = "astroraw-o-matic"
-description = "Mostly harmless RAW conversion — CLI for AstroRAW-o-Matic"
+description = "Mostly harmless RAW conversion // CLI for AstroRAW-o-Matic"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

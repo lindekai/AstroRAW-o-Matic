@@ -4,12 +4,12 @@
 
 🇩🇪 [Deutsche Version / German version](README.de.md)
 
-> **⚠️ Early Alpha — not ready for production use.**
+> **⚠️ Early Alpha // not ready for production use.**
 > The core architecture and CLI are in place, but RAW pixel extraction is not yet fully implemented. Expect breaking changes. Feedback and contributions welcome.
 
 > *"Space is big. You just won't believe how vastly, hugely, mind-bogglingly big it is. And it turns out, so are CR2 files."*
 
-AstroRAW-o-Matic is a reproducible, workflow-oriented RAW-to-FITS converter for astrophotographers. It is the clean first step before stacking and image processing — not a competitor to PixInsight, Siril, or DeepSkyStacker, but the tool you run *before* those.
+AstroRAW-o-Matic is a reproducible, workflow-oriented RAW-to-FITS converter for astrophotographers. It is the clean first step before stacking and image processing // not a competitor to PixInsight, Siril, or DeepSkyStacker, but the tool you run *before* those.
 
 It takes your DSLR RAW files and turns them into properly-headered, reproducible FITS files, ready for your stacking software of choice.
 
@@ -17,7 +17,7 @@ It takes your DSLR RAW files and turns them into properly-headered, reproducible
 
 ## Community
 
-**Dark Matters — Astro Community**
+**Dark Matters // Astro Community**
 Questions, feedback and discussions about AstroRAW-o-Matic:
 
 > 🔗 [discord.gg/mvgC6aXY](https://discord.gg/mvgC6aXY)
@@ -28,11 +28,11 @@ Questions, feedback and discussions about AstroRAW-o-Matic:
 
 Existing RAW-to-FITS tools tend to be technically dated, weakly documented, and workflow-unaware. AstroRAW-o-Matic is built as a modern, CLI-first, session-driven tool:
 
-- **Reproducible**: session JSON captures your equipment and observation data — re-run the same conversion months later and get the same output.
+- **Reproducible**: session JSON captures your equipment and observation data // re-run the same conversion months later and get the same output.
 - **Workflow-oriented**: designed as the step *before* stacking, not a replacement for it.
 - **CLI-first**: usable in scripts, pipelines, and automation from day one.
 - **GitHub-first**: professional structure, open source, MIT licensed.
-- **Engine / UI separated**: same core will power a future GUI — no spaghetti.
+- **Engine / UI separated**: same core will power a future GUI // no spaghetti.
 
 ---
 
@@ -82,9 +82,9 @@ Add it to your PATH, or create an alias `arom`:
 alias arom='astroraw-o-matic'
 ```
 
-### macOS (Homebrew) — coming soon
-### Windows — binary releases planned
-### Linux — binary releases planned
+### macOS (Homebrew) // coming soon
+### Windows // binary releases planned
+### Linux // binary releases planned
 
 ---
 
@@ -269,7 +269,7 @@ AstroRAW-o-Matic
 │   ├── astroraw-core/       # Engine: RAW reading, metadata resolution, FITS writing
 │   └── astroraw-cli/        # CLI frontend (uses core, no UI deps)
 └── (future) crates/
-    └── astroraw-gui/        # Tauri GUI — same core, different frontend
+    └── astroraw-gui/        # Tauri GUI // same core, different frontend
 ```
 
 The engine is UI-free. The CLI is a thin layer over the engine. The future GUI will be another thin layer over the same engine.
@@ -332,7 +332,7 @@ cargo run --bin astroraw-o-matic -- --help
 
 ## License
 
-MIT — Copyright (c) 2026 Kai Linde — see [LICENSE](LICENSE).
+MIT // Copyright (c) 2026 Kai Linde // see [LICENSE](LICENSE).
 
 ---
 

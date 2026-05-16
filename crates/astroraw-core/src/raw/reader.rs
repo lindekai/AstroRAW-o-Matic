@@ -9,7 +9,7 @@ use tracing::debug;
 use astroraw_models::RawMetadata;
 use crate::error::{AstroError, Result};
 
-/// Raw pixel data extracted from a CR2/RAW file — preserved as Bayer mosaic.
+/// Raw pixel data extracted from a CR2/RAW file // preserved as Bayer mosaic.
 #[derive(Debug)]
 pub struct RawPixelData {
     pub width: u32,

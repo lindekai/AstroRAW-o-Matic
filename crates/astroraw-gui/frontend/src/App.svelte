@@ -25,14 +25,23 @@
     const unlisten = await win.onDragDropEvent(async (event) => {
       const type = event.payload.type;
       if (type === "drop") {
-        const paths = (event.payload.paths || []).filter(p =>
+        const dropped = event.payload.paths || [];
+        // Separate files and directories
+        const rawFiles = dropped.filter(p =>
           RAW_EXTS.includes(p.split(".").pop()?.toLowerCase() ?? "")
         );
-        if (paths.length) {
-          selectedFiles = [...selectedFiles, ...paths];
-          // Pre-fill session date/time from first dropped file if not yet set
-          if (!session.session_date && paths[0]) {
-            await prefillDateFromFile(paths[0]);
+        // Scan dropped folders for RAW files
+        const dirs = dropped.filter(p => !p.includes(".") || !RAW_EXTS.includes(p.split(".").pop()?.toLowerCase() ?? ""));
+        let folderFiles = [];
+        for (const dir of dirs) {
+          const found = await invoke("scan_folder", { path: dir });
+          folderFiles = [...folderFiles, ...found];
+        }
+        const allNew = [...rawFiles, ...folderFiles];
+        if (allNew.length) {
+          selectedFiles = [...selectedFiles, ...allNew];
+          if (!session.session_date && allNew[0]) {
+            await prefillDateFromFile(allNew[0]);
           }
         }
         dragOver = false;
@@ -83,9 +92,21 @@
     });
     if (files) {
       const paths = Array.isArray(files) ? files : [files];
-      selectedFiles = paths;
+      selectedFiles = [...selectedFiles, ...paths];
       if (!session.session_date && paths[0]) await prefillDateFromFile(paths[0]);
     }
+  }
+
+  async function pickFolder() {
+    const dir = await open({ directory: true });
+    if (!dir) return;
+    const paths = await invoke("scan_folder", { path: dir });
+    if (paths.length === 0) {
+      alert("Keine RAW-Dateien in diesem Ordner gefunden.");
+      return;
+    }
+    selectedFiles = [...selectedFiles, ...paths];
+    if (!session.session_date && paths[0]) await prefillDateFromFile(paths[0]);
   }
 
 
@@ -179,7 +200,7 @@
     <!-- Right: Files + Convert + Results -->
     <div class="right">
       <div class="files-area">
-        <FileList files={selectedFiles} on:pick={pickFiles} />
+        <FileList files={selectedFiles} on:pick={pickFiles} on:pickFolder={pickFolder} />
       </div>
       <ConvertPanel
         {outputDir}

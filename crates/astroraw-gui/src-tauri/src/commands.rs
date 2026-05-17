@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 use std::fs;
+use walkdir::WalkDir;
 use serde::{Deserialize, Serialize};
 
 use astroraw_core::{
@@ -114,6 +115,28 @@ pub fn convert_files(request: GuiConvertRequest) -> ConvertSummary {
             error: r.error,
         }).collect(),
     }
+}
+
+// ── Folder scan ───────────────────────────────────────────────────────────────
+
+const RAW_EXTS: &[&str] = &["cr2", "cr3", "nef", "arw", "raf"];
+
+/// Recursively scan a folder and return all RAW file paths.
+#[tauri::command]
+pub fn scan_folder(path: String) -> Vec<String> {
+    WalkDir::new(&path)
+        .into_iter()
+        .filter_map(|e| e.ok())
+        .filter(|e| e.file_type().is_file())
+        .filter(|e| {
+            e.path()
+                .extension()
+                .and_then(|x| x.to_str())
+                .map(|x| RAW_EXTS.contains(&x.to_lowercase().as_str()))
+                .unwrap_or(false)
+        })
+        .map(|e| e.path().display().to_string())
+        .collect()
 }
 
 // ── Session JSON Load / Save ──────────────────────────────────────────────────

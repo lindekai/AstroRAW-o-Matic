@@ -21,6 +21,7 @@ pub fn run() {
             commands::validate_session_file,
             commands::load_session_json,
             commands::save_session_json,
+            commands::scan_folder,
         ])
         .run(tauri::generate_context!())
         .expect("error while running AstroRAW-o-Matic");

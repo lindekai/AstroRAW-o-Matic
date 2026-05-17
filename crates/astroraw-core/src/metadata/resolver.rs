@@ -58,8 +58,8 @@ impl<'a> MetadataResolver<'a> {
 
         // ── 2. Software / Global ──────────────────────────────────────────────
         self.push_swcreate(&mut header);
-        header.push_str("ROWORDER", "TOP-DOWN", "Image row order");
-        header.push_float("EQUINOX", 2000.0, "Celestial coordinate equinox");
+        // Note: ROWORDER omitted — can cause Siril to flip the image and shift Bayer pattern
+        // Note: EQUINOX only relevant when WCS plate-solve data is present
 
         // ── 3. Image / Exposure ───────────────────────────────────────────────
         let frame_type = frame_type_cli
@@ -70,8 +70,8 @@ impl<'a> MetadataResolver<'a> {
 
         match self.raw.exposure_time {
             Some(t) => {
-                header.push_float("EXPOSURE", t, "Exposure duration [s]");
-                header.push_float("EXPTIME",  t, "Exposure duration [s] (alias)");
+                header.push_float("EXPTIME",  t, "Exposure duration [s]");
+                header.push_float("EXPOSURE", t, "Exposure duration [s] (alias)");
             }
             None => warnings.push(
                 "The universe refused to provide EXPTIME. Please supply it via metadata JSON.".to_string()

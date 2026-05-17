@@ -5,5 +5,9 @@ pub mod session;
 
 pub use fits_header::{FitsHeader, FitsHeaderRecord, FitsValue, IntoComment};
 pub use frame::FrameType;
-pub use metadata::{CameraMetadata, EquipmentMetadata, LocationMetadata, RawMetadata};
+pub use metadata::{
+    CameraMetadata, EquipmentMetadata, FilterWheelMetadata, FocuserMetadata,
+    LocationMetadata, MountMetadata, RawMetadata, RotatorMetadata,
+    TargetMetadata, WeatherMetadata, WcsMetadata,
+};
 pub use session::{FileOverride, OutputOptions, SessionMetadata};

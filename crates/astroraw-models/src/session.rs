@@ -1,12 +1,14 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-use crate::{EquipmentMetadata, LocationMetadata, FrameType};
+use crate::{
+    EquipmentMetadata, LocationMetadata, FrameType,
+    TargetMetadata, WeatherMetadata, WcsMetadata,
+};
 
-/// Top-level session metadata // the "contract" between CLI, engine and future GUI.
+/// Top-level session metadata — the "contract" between CLI, engine, GUI and N.I.N.A. plugin.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SessionMetadata {
-    /// Schema version for forward-compatibility checks
     #[serde(default = "default_schema_version")]
     pub schema_version: String,
 
@@ -15,12 +17,9 @@ pub struct SessionMetadata {
     pub observer: Option<String>,
     pub notes: Option<String>,
 
-    // --- Session date/time (used as DATE-OBS if no EXIF; pre-filled from EXIF in GUI) ---
-    /// Session date: "2024-01-09"
+    // --- Session date/time ---
     pub session_date: Option<String>,
-    /// Session time (UTC): "21:34:00"
     pub session_time: Option<String>,
-    /// Full DATE-OBS override // takes priority over session_date + session_time + EXIF
     pub date_obs: Option<String>,
 
     // --- Equipment ---
@@ -29,6 +28,15 @@ pub struct SessionMetadata {
     // --- Location ---
     pub location: Option<LocationMetadata>,
 
+    // --- Target coordinates ---
+    pub target: Option<TargetMetadata>,
+
+    // --- Weather / environment ---
+    pub weather: Option<WeatherMetadata>,
+
+    // --- WCS (from plate solver) ---
+    pub wcs: Option<WcsMetadata>,
+
     // --- Frame classification ---
     pub frame_type: Option<FrameType>,
 
@@ -36,34 +44,24 @@ pub struct SessionMetadata {
     pub output: Option<OutputOptions>,
 
     // --- Per-file overrides ---
-    /// Keyed by filename (basename, e.g. "IMG_0042.CR2")
     #[serde(default)]
     pub file_overrides: HashMap<String, FileOverride>,
 }
 
 fn default_schema_version() -> String {
-    "1.0".to_string()
+    "1.1".to_string()
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OutputOptions {
-    /// "raw_bayer" (default) or "debayered" (future)
     #[serde(default = "default_raw_mode")]
     pub raw_mode: String,
-
-    /// "minimal" or "astro" (default)
     #[serde(default = "default_header_mode")]
     pub header_mode: String,
-
-    /// Overwrite existing FITS files
     #[serde(default)]
     pub overwrite: bool,
-
-    /// Append HISTORY records to FITS header
     #[serde(default = "default_true")]
     pub write_history: bool,
-
-    /// Filename pattern for exported JSON (GUI only). Placeholders: {object}, {date}, {observer}
     #[serde(skip_serializing_if = "Option::is_none")]
     pub json_filename_pattern: Option<String>,
 }
@@ -80,19 +78,11 @@ impl Default for OutputOptions {
     }
 }
 
-fn default_raw_mode() -> String {
-    "raw_bayer".to_string()
-}
+fn default_raw_mode() -> String    { "raw_bayer".to_string() }
+fn default_header_mode() -> String { "astro".to_string() }
+fn default_true() -> bool          { true }
 
-fn default_header_mode() -> String {
-    "astro".to_string()
-}
-
-fn default_true() -> bool {
-    true
-}
-
-/// Per-file overrides that take priority over session-level values.
+/// Per-file overrides — highest priority in metadata chain.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct FileOverride {
     pub object: Option<String>,

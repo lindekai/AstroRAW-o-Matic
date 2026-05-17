@@ -45,9 +45,9 @@ impl<'a> MetadataResolver<'a> {
         header.push_int ("NAXIS",   2,    "Number of array dimensions");
         header.push_int ("NAXIS1",  self.raw.width.unwrap_or(0) as i64,  "Image width in pixels");
         header.push_int ("NAXIS2",  self.raw.height.unwrap_or(0) as i64, "Image height in pixels");
-        header.push_int ("BZERO",   32768, "Offset for unsigned 16-bit integers");
-        header.push_int ("BSCALE",  1,    "Default scaling factor");
         header.push_bool("EXTEND",  true, "Extensions are permitted");
+        // Note: no BZERO/BSCALE — Canon 14-bit RAW fits in signed 16-bit (0..16383)
+        // BZERO=32768 would shift all values by +32768 causing wrong color interpretation
 
         let header_mode = out.map(|o| o.header_mode.as_str()).unwrap_or("astro");
         if header_mode != "astro" {

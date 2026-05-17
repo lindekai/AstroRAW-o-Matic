@@ -200,7 +200,7 @@
     <!-- Right: Files + Convert + Results -->
     <div class="right">
       <div class="files-area">
-        <FileList files={selectedFiles} on:pick={pickFiles} on:pickFolder={pickFolder} />
+        <FileList bind:files={selectedFiles} on:pick={pickFiles} on:pickFolder={pickFolder} />
       </div>
       <ConvertPanel
         {outputDir}

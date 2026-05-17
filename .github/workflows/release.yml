@@ -1,0 +1,186 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+
+  # ── CLI: native builds on all platforms ─────────────────────────────────────
+
+  cli:
+    name: CLI // ${{ matrix.target }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-apple-darwin
+            runner: macos-13
+            binary: astroraw-o-matic
+            archive: astroraw-o-matic_${{ github.ref_name }}_macOS_x86_64.tar.gz
+
+          - target: aarch64-apple-darwin
+            runner: macos-latest
+            binary: astroraw-o-matic
+            archive: astroraw-o-matic_${{ github.ref_name }}_macOS_arm64.tar.gz
+
+          - target: x86_64-pc-windows-msvc
+            runner: windows-latest
+            binary: astroraw-o-matic.exe
+            archive: astroraw-o-matic_${{ github.ref_name }}_Windows_x86_64.zip
+
+          - target: x86_64-unknown-linux-gnu
+            runner: ubuntu-22.04
+            binary: astroraw-o-matic
+            archive: astroraw-o-matic_${{ github.ref_name }}_Linux_x86_64.tar.gz
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+
+      - name: Build CLI
+        run: cargo build --release --bin astroraw-o-matic --target ${{ matrix.target }}
+
+      - name: Package (macOS / Linux)
+        if: runner.os != 'Windows'
+        run: |
+          cd target/${{ matrix.target }}/release
+          tar czf ../../../${{ matrix.archive }} ${{ matrix.binary }}
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cd target/${{ matrix.target }}/release
+          Compress-Archive -Path ${{ matrix.binary }} -DestinationPath ../../../${{ matrix.archive }}
+
+      - name: Upload CLI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cli-${{ matrix.target }}
+          path: ${{ matrix.archive }}
+
+  # ── GUI: Tauri builds (must run on native OS) ────────────────────────────────
+
+  gui:
+    name: GUI // ${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macOS (arm64)
+            runner: macos-latest
+            args: --target aarch64-apple-darwin
+
+          - platform: macOS (x86_64)
+            runner: macos-13
+            args: --target x86_64-apple-darwin
+
+          - platform: Windows
+            runner: windows-latest
+            args: ''
+
+          - platform: Linux
+            runner: ubuntu-22.04
+            args: ''
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: crates/astroraw-gui/frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm install --prefix crates/astroraw-gui/frontend
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: '. -> target'
+
+      - name: Build Tauri GUI
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: crates/astroraw-gui
+          args: ${{ matrix.args }}
+          tagName: ${{ github.ref_name }}
+          releaseName: AstroRAW-o-Matic ${{ github.ref_name }}
+          releaseBody: |
+            See [CHANGELOG.md](https://github.com/lindekai/AstroRAW-o-Matic/blob/main/CHANGELOG.md) for details.
+
+            **Community:** [Dark Matters Discord](https://discord.gg/mvgC6aXY)
+          releaseDraft: true
+          prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') }}
+
+  # ── GitHub Release: attach CLI artifacts ────────────────────────────────────
+
+  release:
+    name: Attach CLI to Release
+    needs: [cli, gui]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all CLI artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: cli-*
+          merge-multiple: true
+          path: dist/
+
+      - name: Upload CLI binaries to release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: dist/*
+          body: |
+            ## AstroRAW-o-Matic ${{ github.ref_name }}
+
+            Mostly harmless RAW conversion.
+
+            ### Downloads
+
+            | Platform | Binary |
+            |----------|--------|
+            | macOS Apple Silicon | `astroraw-o-matic_*_macOS_arm64.tar.gz` |
+            | macOS Intel | `astroraw-o-matic_*_macOS_x86_64.tar.gz` |
+            | Windows | `astroraw-o-matic_*_Windows_x86_64.zip` |
+            | Linux | `astroraw-o-matic_*_Linux_x86_64.tar.gz` |
+
+            GUI installers (.dmg, .msi, .AppImage) are attached by the GUI build jobs.
+
+            **Community:** [Dark Matters Discord](https://discord.gg/mvgC6aXY)
+
+            See [CHANGELOG.md](CHANGELOG.md) for full release notes.

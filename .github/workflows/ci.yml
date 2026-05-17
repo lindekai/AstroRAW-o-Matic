@@ -20,10 +20,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
-      - name: Build
-        run: cargo build --workspace
+      - name: Build CLI + Core
+        run: cargo build --workspace --exclude astroraw-gui
       - name: Test
-        run: cargo test --workspace
+        run: cargo test --workspace --exclude astroraw-gui
 
   clippy:
     name: Clippy
@@ -34,7 +34,7 @@ jobs:
         with:
           components: clippy
       - uses: Swatinem/rust-cache@v2
-      - run: cargo clippy --workspace -- -D warnings
+      - run: cargo clippy --workspace --exclude astroraw-gui -- -D warnings
 
   fmt:
     name: Format

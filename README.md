@@ -82,7 +82,12 @@ Add it to your PATH, or create an alias `arom`:
 alias arom='astroraw-o-matic'
 ```
 
-### macOS (Homebrew) // coming soon
+### macOS (Homebrew)
+
+```bash
+brew tap lindekai/astroraw-o-matic https://github.com/lindekai/AstroRAW-o-Matic
+brew install astroraw-o-matic
+```
 ### Windows // binary releases planned
 ### Linux // binary releases planned
 
@@ -313,7 +318,7 @@ See [`integrations/nina-plugin/`](integrations/nina-plugin/) for architecture, s
 - [ ] Nikon NEF support
 - [ ] Sony ARW support
 - [ ] Shell completions (bash, zsh, fish)
-- [ ] Homebrew formula
+- [x] Homebrew formula (Formula/astroraw-o-matic.rb)
 - [ ] Tauri GUI
 
 ---

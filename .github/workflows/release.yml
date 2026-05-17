@@ -184,3 +184,45 @@ jobs:
             **Community:** [Dark Matters Discord](https://discord.gg/mvgC6aXY)
 
             See [CHANGELOG.md](CHANGELOG.md) for full release notes.
+
+  # ── Homebrew Formula aktualisieren ──────────────────────────────────────────
+
+  homebrew:
+    name: Update Homebrew Formula
+    needs: [cli]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download macOS arm64 CLI artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cli-aarch64-apple-darwin
+          path: dist/
+
+      - name: Compute SHA256 of source tarball
+        id: sha
+        run: |
+          VERSION="${{ github.ref_name }}"
+          URL="https://github.com/lindekai/AstroRAW-o-Matic/archive/refs/tags/${VERSION}.tar.gz"
+          curl -sL "$URL" -o source.tar.gz
+          SHA=$(sha256sum source.tar.gz | awk '{print $1}')
+          echo "sha256=${SHA}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION#v}" >> $GITHUB_OUTPUT
+
+      - name: Update Formula/astroraw-o-matic.rb
+        run: |
+          VERSION="${{ steps.sha.outputs.version }}"
+          SHA="${{ steps.sha.outputs.sha256 }}"
+          sed -i "s|PLACEHOLDER_SHA256|${SHA}|g" Formula/astroraw-o-matic.rb
+          sed -i "s|/tags/v[0-9.]*/|/tags/v${VERSION}/|g" Formula/astroraw-o-matic.rb
+
+      - name: Commit updated formula
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/astroraw-o-matic.rb
+          git commit -m "chore: update Homebrew formula to v${{ steps.sha.outputs.version }}" || true
+          git push

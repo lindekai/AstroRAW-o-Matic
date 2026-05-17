@@ -6,17 +6,66 @@
     <RootNamespace>AstroRawOMatic.Nina.Plugin</RootNamespace>
     <Version>0.1.0</Version>
     <Authors>Kai Linde</Authors>
-    <Description>AstroRAW-o-Matic Bridge Plugin for N.I.N.A. // Converts CR2 to FITS via CLI</Description>
+    <Description>AstroRAW-o-Matic Bridge Plugin for N.I.N.A.</Description>
     <Copyright>© 2026 Kai Linde</Copyright>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <!-- Plugin DLL goes next to N.I.N.A. plugins folder -->
+    <Platforms>x64</Platforms>
   </PropertyGroup>
 
+  <!--
+    N.I.N.A. Installation path.
+    Adjust if N.I.N.A. is installed in a different location.
+    Default: C:\Program Files\N.I.N.A. - Nighttime Imaging N Astronomy\
+  -->
+  <PropertyGroup>
+    <NinaPath Condition="'$(NinaPath)' == ''">C:\Program Files\N.I.N.A. - Nighttime Imaging 'N' Astronomy\</NinaPath>
+  </PropertyGroup>
+
+  <!-- N.I.N.A. core assemblies (referenced from installation, not NuGet) -->
   <ItemGroup>
-    <!-- N.I.N.A. Plugin SDK: add via NuGet when available -->
-    <!-- <PackageReference Include="NINA.Plugin" Version="*" /> -->
+    <Reference Include="NINA.Core">
+      <HintPath>$(NinaPath)NINA.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="NINA.Image">
+      <HintPath>$(NinaPath)NINA.Image.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="NINA.Plugin">
+      <HintPath>$(NinaPath)NINA.Plugin.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="NINA.Equipment">
+      <HintPath>$(NinaPath)NINA.Equipment.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="NINA.Astrometry">
+      <HintPath>$(NinaPath)NINA.Astrometry.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="NINA.Profile">
+      <HintPath>$(NinaPath)NINA.Profile.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="8.*" />
   </ItemGroup>
+
+  <!-- Copy output to N.I.N.A. plugins folder for testing -->
+  <Target Name="DeployToNina" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+    <PropertyGroup>
+      <NinaPluginDir>$(APPDATA)\NINA\Plugins\AstroRawOMatic\</NinaPluginDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(NinaPluginDir)" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll"
+          DestinationFolder="$(NinaPluginDir)"
+          SkipUnchangedFiles="true" />
+    <Message Text="Deployed to $(NinaPluginDir)" Importance="high" />
+  </Target>
 
 </Project>
